@@ -1,51 +1,72 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 import { checklistCategories } from "@/data/checklist";
 
 const STORAGE_KEY = "choosemath-checklist";
 
+// ── localStorage store ──────────────────────────────────────────────────────
+
+const _listeners = new Set<() => void>();
+let _snapshot: Set<string> | undefined;
+
+function _readFromStorage(): Set<string> {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? new Set<string>(JSON.parse(raw)) : new Set();
+  } catch {
+    return new Set();
+  }
+}
+
+function subscribeToChecked(cb: () => void) {
+  _listeners.add(cb);
+  return () => _listeners.delete(cb);
+}
+
+function getCheckedSnapshot(): Set<string> {
+  if (_snapshot === undefined) _snapshot = _readFromStorage();
+  return _snapshot;
+}
+
+function getCheckedServerSnapshot(): Set<string> {
+  return new Set();
+}
+
+function updateChecked(next: Set<string>) {
+  _snapshot = next;
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(Array.from(next)));
+  } catch {}
+  _listeners.forEach((l) => l());
+}
+
+function noopSubscribe() {
+  return () => {};
+}
+
+// ── Component ───────────────────────────────────────────────────────────────
+
 export function ChecklistTracker() {
-  const [checked, setChecked] = useState<Set<string>>(new Set());
-  const [mounted, setMounted] = useState(false);
-
-  // Load from localStorage on mount
-  useEffect(() => {
-    try {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored) {
-        setChecked(new Set(JSON.parse(stored)));
-      }
-    } catch {
-      // Ignore parse errors
-    }
-    setMounted(true);
-  }, []);
-
-  // Persist to localStorage on change
-  useEffect(() => {
-    if (!mounted) return;
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(Array.from(checked)));
-    } catch {
-      // Ignore storage errors
-    }
-  }, [checked, mounted]);
+  const checked = useSyncExternalStore(
+    subscribeToChecked,
+    getCheckedSnapshot,
+    getCheckedServerSnapshot,
+  );
+  const mounted = useSyncExternalStore(noopSubscribe, () => true, () => false);
 
   function toggle(id: string) {
-    setChecked((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) {
-        next.delete(id);
-      } else {
-        next.add(id);
-      }
-      return next;
-    });
+    const next = new Set(checked);
+    if (next.has(id)) {
+      next.delete(id);
+    } else {
+      next.add(id);
+    }
+    updateChecked(next);
   }
 
   function clearAll() {
-    setChecked(new Set());
+    updateChecked(new Set());
   }
 
   const totalItems = checklistCategories.reduce((sum, cat) => sum + cat.items.length, 0);
