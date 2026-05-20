@@ -79,7 +79,7 @@ export const roadmapSteps: RoadmapStep[] = [
       { text: "For actuarial track: pass at least 2–3 exams (P, FM, MFE) and get internship credit" },
       { text: "Build your GitHub portfolio with mathematical computing projects" },
     ],
-    tip: "PhD programs typically cover tuition and provide a stipend ($20K–$35K/year) in exchange for teaching or research work. A math PhD is not a financial sacrifice — apply broadly.",
+    tip: "Many math PhD programs cover tuition and provide a stipend in exchange for teaching or research work. Verify each offer's funding package, cost of living, and summer support before comparing programs.",
     icon: "λ",
   },
   {
@@ -96,7 +96,7 @@ export const roadmapSteps: RoadmapStep[] = [
       { text: "Actuaries: continue exam progress toward FSA or FCAS designation" },
       { text: "Consider a master's in a specialized field (Financial Math, Statistics, CS) for industry pivots" },
     ],
-    tip: "The average math PhD graduate entering industry earns 20–40% more than candidates from other quantitative disciplines at the same experience level. The rigor pays off.",
+    tip: "Advanced mathematical training can be a strong signal for research-heavy industry roles. The payoff depends heavily on domain fit, programming skill, internships, and the specific labor market you enter.",
     icon: "∂",
   },
   {

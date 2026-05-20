@@ -32,7 +32,7 @@ All 18 pages are pre-rendered as static HTML at build time — no server require
 | `/careers` | Grid of all 7 career paths with salary ranges |
 | `/careers/[slug]` | Career detail — day-in-the-life, required skills, employers, salary |
 | `/roadmap` | 6-step path from high school to career with action items and pro tips |
-| `/programs` | 10 top national math programs, filterable by Pure / Applied / Statistics |
+| `/programs` | Notable national math programs, filterable by Pure / Applied / Statistics |
 | `/stories` | 6 static alumni profiles with quotes and career trajectories |
 | `/resources` | 20+ resources — textbooks, courses, competitions, tools, communities |
 | `/checklist` | Skills checklist with `localStorage` persistence and per-category progress bars |
@@ -68,7 +68,7 @@ components/             ← Shared UI components
 
 data/                   ← All static content as typed TypeScript arrays
   careers.ts            ← CareerTrack[] — 7 career paths
-  programs.ts           ← Program[] — 10 top programs
+  programs.ts           ← Program[] — notable math programs
   quiz.ts               ← QuizQuestion[] + scoring logic
   stories.ts            ← Story[] — 6 alumni profiles
   resources.ts          ← Resource[] — 20+ curated resources

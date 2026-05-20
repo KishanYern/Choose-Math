@@ -45,7 +45,7 @@ export function QuizEngine() {
   }
 
   if (result) {
-    return <QuizResult result={result} onRestart={handleRestart} />;
+    return <QuizResultView result={result} onRestart={handleRestart} />;
   }
 
   return (
@@ -56,9 +56,9 @@ export function QuizEngine() {
           <span>Question {currentQ + 1} of {questions.length}</span>
           <span>{Math.round(progress)}% complete</span>
         </div>
-        <div className="h-1.5 bg-slate-800 rounded-full overflow-hidden">
+        <div className="h-1.5 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
           <div
-            className="h-full bg-gradient-to-r from-indigo-500 to-violet-500 rounded-full transition-all duration-300"
+            className="h-full bg-linear-to-r from-indigo-500 to-violet-500 rounded-full transition-all duration-300"
             style={{ width: `${progress}%` }}
           />
         </div>
@@ -66,10 +66,10 @@ export function QuizEngine() {
 
       {/* Question */}
       <div className="mb-8">
-        <p className="text-xs font-medium text-indigo-400 uppercase tracking-wider mb-3">
+        <p className="text-xs font-medium text-indigo-600 dark:text-indigo-400 uppercase tracking-wider mb-3">
           Question {currentQ + 1}
         </p>
-        <h2 className="text-xl sm:text-2xl font-semibold text-slate-100 leading-snug">
+        <h2 className="text-xl sm:text-2xl font-semibold text-slate-900 dark:text-slate-100 leading-snug">
           {question.question}
         </h2>
       </div>
@@ -84,14 +84,14 @@ export function QuizEngine() {
               onClick={() => handleSelect(option.id)}
               className={`w-full text-left px-5 py-4 rounded-xl border transition-all duration-150 ${
                 isChosen
-                  ? "border-indigo-500 bg-indigo-500/15 text-slate-100"
-                  : "border-slate-700 bg-slate-900/50 text-slate-300 hover:border-slate-500 hover:bg-slate-800/50"
+                  ? "border-indigo-500 bg-indigo-500/10 text-slate-900 dark:text-slate-100"
+                  : "border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900/50 text-slate-700 dark:text-slate-300 hover:border-indigo-300 dark:hover:border-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800/50"
               }`}
             >
               <div className="flex items-start gap-3">
                 <span
-                  className={`mt-0.5 w-4 h-4 rounded-full border-2 flex-shrink-0 transition-colors ${
-                    isChosen ? "border-indigo-400 bg-indigo-400" : "border-slate-600"
+                  className={`mt-0.5 w-4 h-4 rounded-full border-2 shrink-0 transition-colors ${
+                    isChosen ? "border-indigo-500 bg-indigo-500" : "border-slate-300 dark:border-slate-600"
                   }`}
                 />
                 <span className="text-sm sm:text-base leading-relaxed">{option.text}</span>
@@ -106,7 +106,7 @@ export function QuizEngine() {
         <button
           onClick={handleBack}
           disabled={currentQ === 0}
-          className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-slate-400 hover:text-slate-200 disabled:opacity-30 disabled:cursor-not-allowed transition-colors text-sm font-medium"
+          className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 disabled:opacity-30 disabled:cursor-not-allowed transition-colors text-sm font-medium"
         >
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M11 17l-5-5m0 0l5-5m-5 5h12" />
@@ -128,7 +128,7 @@ export function QuizEngine() {
   );
 }
 
-function QuizResult({ result, onRestart }: { result: QuizResult; onRestart: () => void }) {
+function QuizResultView({ result, onRestart }: { result: QuizResult; onRestart: () => void }) {
   const careerSlugMap: Record<string, string> = {
     "pure-math": "academia",
     "applied-math": "quantitative-finance",
@@ -140,22 +140,22 @@ function QuizResult({ result, onRestart }: { result: QuizResult; onRestart: () =
     <div className="max-w-2xl mx-auto">
       {/* Result header */}
       <div className="text-center mb-10">
-        <div className="text-6xl math-symbol text-indigo-400 font-light mb-5">{result.emoji}</div>
-        <p className="text-xs font-medium text-indigo-400 uppercase tracking-widest mb-2">Your result</p>
-        <h2 className="text-3xl sm:text-4xl font-bold text-slate-100 mb-4">{result.title}</h2>
-        <p className="text-slate-400 text-base leading-relaxed max-w-lg mx-auto">{result.description}</p>
+        <div className="text-6xl math-symbol text-indigo-500 dark:text-indigo-400 font-light mb-5">{result.emoji}</div>
+        <p className="text-xs font-medium text-indigo-600 dark:text-indigo-400 uppercase tracking-widest mb-2">Your result</p>
+        <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-slate-100 mb-4">{result.title}</h2>
+        <p className="text-slate-600 dark:text-slate-400 text-base leading-relaxed max-w-lg mx-auto">{result.description}</p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-8">
         {/* Careers */}
-        <div className="p-5 rounded-xl border border-slate-800 bg-slate-900/50">
-          <h3 className="text-sm font-semibold text-slate-300 mb-3 flex items-center gap-2">
-            <span className="text-indigo-400 math-symbol">→</span> Career Paths
+        <div className="p-5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50">
+          <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3 flex items-center gap-2">
+            <span className="text-indigo-500 dark:text-indigo-400 math-symbol">→</span> Career Paths
           </h3>
           <ul className="space-y-1.5">
             {result.careers.map((career) => (
-              <li key={career} className="text-slate-400 text-sm flex items-center gap-2">
-                <span className="w-1 h-1 rounded-full bg-indigo-500/60 flex-shrink-0" />
+              <li key={career} className="text-slate-600 dark:text-slate-400 text-sm flex items-center gap-2">
+                <span className="w-1 h-1 rounded-full bg-indigo-500/60 shrink-0" />
                 {career}
               </li>
             ))}
@@ -163,14 +163,14 @@ function QuizResult({ result, onRestart }: { result: QuizResult; onRestart: () =
         </div>
 
         {/* Courses */}
-        <div className="p-5 rounded-xl border border-slate-800 bg-slate-900/50">
-          <h3 className="text-sm font-semibold text-slate-300 mb-3 flex items-center gap-2">
-            <span className="text-indigo-400 math-symbol">∑</span> Key Courses
+        <div className="p-5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50">
+          <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3 flex items-center gap-2">
+            <span className="text-indigo-500 dark:text-indigo-400 math-symbol">∑</span> Key Courses
           </h3>
           <ul className="space-y-1.5">
             {result.courses.map((course) => (
-              <li key={course} className="text-slate-400 text-sm flex items-center gap-2">
-                <span className="w-1 h-1 rounded-full bg-violet-500/60 flex-shrink-0" />
+              <li key={course} className="text-slate-600 dark:text-slate-400 text-sm flex items-center gap-2">
+                <span className="w-1 h-1 rounded-full bg-violet-500/60 shrink-0" />
                 {course}
               </li>
             ))}
@@ -179,14 +179,14 @@ function QuizResult({ result, onRestart }: { result: QuizResult; onRestart: () =
       </div>
 
       {/* Next steps */}
-      <div className="p-5 rounded-xl border border-slate-800 bg-slate-900/50 mb-8">
-        <h3 className="text-sm font-semibold text-slate-300 mb-4 flex items-center gap-2">
-          <span className="text-indigo-400">✓</span> Your Next Steps
+      <div className="p-5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 mb-8">
+        <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-4 flex items-center gap-2">
+          <span className="text-indigo-500 dark:text-indigo-400">✓</span> Your Next Steps
         </h3>
         <ol className="space-y-3">
           {result.nextSteps.map((step, i) => (
-            <li key={i} className="flex items-start gap-3 text-sm text-slate-400">
-              <span className="flex-shrink-0 w-5 h-5 rounded-full bg-indigo-500/20 text-indigo-400 text-xs flex items-center justify-center font-medium mt-0.5">
+            <li key={i} className="flex items-start gap-3 text-sm text-slate-600 dark:text-slate-400">
+              <span className="shrink-0 w-5 h-5 rounded-full bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 text-xs flex items-center justify-center font-medium mt-0.5">
                 {i + 1}
               </span>
               {step}
@@ -205,13 +205,13 @@ function QuizResult({ result, onRestart }: { result: QuizResult; onRestart: () =
         </Link>
         <Link
           href="/roadmap"
-          className="flex-1 px-5 py-3 rounded-xl border border-slate-700 hover:border-slate-500 text-slate-300 hover:text-white text-sm font-medium text-center transition-colors"
+          className="flex-1 px-5 py-3 rounded-xl border border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-500 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white text-sm font-medium text-center transition-colors"
         >
           View the roadmap
         </Link>
         <button
           onClick={onRestart}
-          className="px-5 py-3 rounded-xl border border-slate-800 hover:border-slate-600 text-slate-500 hover:text-slate-300 text-sm font-medium transition-colors"
+          className="px-5 py-3 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-600 text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 text-sm font-medium transition-colors"
         >
           Retake quiz
         </button>

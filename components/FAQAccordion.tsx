@@ -5,13 +5,17 @@ import { useState } from "react";
 interface FAQItem {
   question: string;
   answer: string;
+  sourceLabel?: string;
+  sourceUrl?: string;
 }
 
 const faqs: FAQItem[] = [
   {
     question: "Is a mathematics degree worth it in 2026?",
     answer:
-      "Absolutely. Mathematics is one of the most versatile quantitative degrees available. It opens doors to finance (quant roles at hedge funds and banks), technology (ML engineering, data science, software), government (NSA, Census, DOD), and academia. Mathematically rigorous candidates command salary premiums of 20–40% over general STEM graduates in competitive quantitative roles. The analytical problem-solving skills a math degree develops are valuable in virtually every industry.",
+      "Yes, if you want a rigorous quantitative path with broad options. It opens doors to finance, technology, government, insurance, research, and academia. Public labor data backs up several math-heavy paths: data scientists, actuaries, operations research analysts, and computer research scientists are all projected to grow much faster than the average occupation.",
+    sourceLabel: "BLS Math Occupations",
+    sourceUrl: "https://www.bls.gov/ooh/math/",
   },
   {
     question: "What can you actually do with a math degree?",
@@ -36,7 +40,9 @@ const faqs: FAQItem[] = [
   {
     question: "When should I start preparing for actuarial exams?",
     answer:
-      "As early as your freshman or sophomore year. Exam P (Probability) is typically taken after completing a solid probability course — many students sit it the summer after their sophomore year. Passing even one exam before your junior year internship search dramatically improves your competitiveness. Each exam you pass adds roughly $5,000–$10,000 to your annual starting salary. The exams are hard but very passable with dedicated preparation using standard resources (ACTEX, ASM manuals).",
+      "As early as your freshman or sophomore year. Exam P (Probability) is typically taken after completing a solid probability course — many students sit it the summer after their sophomore year. Passing exams before your junior-year internship search can improve your competitiveness, and actuarial salary surveys consistently segment compensation by number of exams passed. The exams are hard but very passable with dedicated preparation using standard resources.",
+    sourceLabel: "Actuarial Careers salary survey",
+    sourceUrl: "https://www.actuarialcareers.com/2024-salary-survey-results/",
   },
   {
     question: "Which math courses are most important for a career in tech?",
@@ -46,7 +52,7 @@ const faqs: FAQItem[] = [
   {
     question: "What GPA do I need to get into a top math PhD program?",
     answer:
-      "Top PhD programs (MIT, Princeton, Chicago, Harvard) are extremely selective and typically want applicants with 3.8+ GPA in mathematics courses, strong letters of recommendation from research faculty, research experience (REU or thesis), and a demonstrated ability to do original mathematics. The Math GRE Subject Test, while some programs have made it optional, remains a differentiating factor for strong applicants. Getting into your school's honors program and seeking research opportunities early matters more than GPA alone.",
+      "Top PhD programs are extremely selective and usually look for much more than GPA: strong letters from research faculty, advanced coursework, research experience through an REU or thesis, and evidence that you can do original mathematics. A very strong math GPA helps, but research preparation and faculty recommendations matter more than any single cutoff.",
   },
 ];
 
@@ -80,6 +86,16 @@ export function FAQAccordion() {
           {openIndex === i && (
             <div className="px-5 py-4 bg-white dark:bg-slate-900/20 border-t border-slate-200 dark:border-slate-800">
               <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">{faq.answer}</p>
+              {faq.sourceUrl && (
+                <a
+                  href={faq.sourceUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block text-xs text-indigo-500 dark:text-indigo-400 hover:text-indigo-300 mt-3"
+                >
+                  Source: {faq.sourceLabel}
+                </a>
+              )}
             </div>
           )}
         </div>

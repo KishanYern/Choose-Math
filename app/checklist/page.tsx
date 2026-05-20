@@ -10,19 +10,19 @@ export const metadata: Metadata = {
 
 export default function ChecklistPage() {
   return (
-    <div className="min-h-screen bg-slate-950">
+    <div className="min-h-screen bg-white dark:bg-slate-950">
       {/* Header */}
-      <div className="border-b border-slate-800 bg-slate-900/40">
+      <div className="border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/40">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
-          <p className="text-indigo-400 text-xs font-medium uppercase tracking-widest mb-3">Checklist</p>
-          <h1 className="text-3xl sm:text-4xl font-bold text-slate-100 mb-3">
+          <p className="text-indigo-600 dark:text-indigo-400 text-xs font-medium uppercase tracking-widest mb-3">Checklist</p>
+          <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-slate-100 mb-3">
             Are You on Track?
           </h1>
-          <p className="text-slate-400 text-lg max-w-2xl leading-relaxed">
+          <p className="text-slate-600 dark:text-slate-400 text-lg max-w-2xl leading-relaxed">
             Use this checklist to track your mathematical skills and course progress.
             Your progress saves automatically in this browser.
           </p>
-          <div className="flex flex-wrap items-center gap-4 mt-5 text-xs text-slate-600">
+          <div className="flex flex-wrap items-center gap-4 mt-5 text-xs text-slate-500">
             <span className="flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-indigo-500" />
               Progress auto-saved in browser
@@ -40,7 +40,7 @@ export default function ChecklistPage() {
         <ChecklistTracker />
 
         {/* Links */}
-        <div className="mt-12 pt-8 border-t border-slate-800">
+        <div className="mt-12 pt-8 border-t border-slate-200 dark:border-slate-800">
           <p className="text-slate-500 text-sm mb-4">
             Use the roadmap to understand the timeline behind these skills.
           </p>
@@ -53,7 +53,7 @@ export default function ChecklistPage() {
             </Link>
             <Link
               href="/resources"
-              className="px-5 py-2.5 rounded-xl border border-slate-700 hover:border-slate-500 text-slate-300 hover:text-white text-sm font-medium text-center transition-colors"
+              className="px-5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-500 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white text-sm font-medium text-center transition-colors"
             >
               Find learning resources
             </Link>

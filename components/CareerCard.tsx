@@ -24,6 +24,9 @@ export function CareerCard({ career, compact = false }: CareerCardProps) {
             {salaryK(career.salaryRange.min)}–{salaryK(career.salaryRange.max)}
           </span>
         </div>
+        <p className="text-[11px] text-slate-500 dark:text-slate-600 mb-2">
+          Salary source: {career.salarySource.label.split(" ")[0]}
+        </p>
 
         <h3 className="font-semibold text-slate-900 dark:text-slate-100 text-lg mb-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-300 transition-colors">
           {career.title}

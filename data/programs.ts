@@ -10,7 +10,6 @@ export interface Program {
   highlights: string[];
   notableAreas: string[];
   url: string;
-  ranking?: number;
 }
 
 export const programs: Program[] = [
@@ -23,14 +22,13 @@ export const programs: Program[] = [
     description:
       "MIT Mathematics is renowned for its research output across pure and applied mathematics. The department produces Nobel and Fields Medal winners and maintains deep ties to MIT's engineering and physics programs.",
     highlights: [
-      "Home to 5 Fields Medalists among alumni and faculty",
+      "Fields Medal-winning alumni and faculty across the department's history",
       "Strong pure math research in algebra, number theory, and geometry",
       "Applied math program tightly integrated with engineering and physics",
       "Joint programs with EECS and Economics",
     ],
     notableAreas: ["Number Theory", "Algebraic Geometry", "PDEs", "Mathematical Physics"],
     url: "https://math.mit.edu",
-    ranking: 1,
   },
   {
     id: "2",
@@ -48,7 +46,6 @@ export const programs: Program[] = [
     ],
     notableAreas: ["Number Theory", "Topology", "Algebraic Geometry", "Mathematical Logic"],
     url: "https://math.princeton.edu",
-    ranking: 2,
   },
   {
     id: "3",
@@ -66,7 +63,6 @@ export const programs: Program[] = [
     ],
     notableAreas: ["Algebraic Geometry", "Analysis", "Combinatorics", "Mathematical Finance"],
     url: "https://math.uchicago.edu",
-    ranking: 3,
   },
   {
     id: "4",
@@ -84,7 +80,6 @@ export const programs: Program[] = [
     ],
     notableAreas: ["Optimization", "Mathematical Finance", "Probability", "Statistics & ML"],
     url: "https://mathematics.stanford.edu",
-    ranking: 4,
   },
   {
     id: "5",
@@ -102,7 +97,6 @@ export const programs: Program[] = [
     ],
     notableAreas: ["Representation Theory", "Geometry", "Number Theory", "Mathematical Physics"],
     url: "https://math.harvard.edu",
-    ranking: 5,
   },
   {
     id: "6",
@@ -111,7 +105,7 @@ export const programs: Program[] = [
     location: "Berkeley, CA",
     focus: ["pure-math", "applied-math", "statistics"],
     description:
-      "Berkeley's mathematics and statistics departments are consistently ranked among the world's best. The department has produced more PhDs than almost any other institution and has exceptional breadth.",
+      "Berkeley's mathematics and statistics departments are known for exceptional breadth across pure, applied, and statistical areas, with a large research community and strong undergraduate offerings.",
     highlights: [
       "Separate, world-class Statistics department",
       "Exceptional faculty breadth across all subfields",
@@ -120,7 +114,6 @@ export const programs: Program[] = [
     ],
     notableAreas: ["Algebra", "Analysis", "Probability", "Statistics", "Mathematical Physics"],
     url: "https://math.berkeley.edu",
-    ranking: 6,
   },
   {
     id: "7",
@@ -138,7 +131,6 @@ export const programs: Program[] = [
     ],
     notableAreas: ["PDEs", "Fluid Dynamics", "Mathematical Finance", "Numerical Analysis"],
     url: "https://math.nyu.edu",
-    ranking: 7,
   },
   {
     id: "8",
@@ -147,7 +139,7 @@ export const programs: Program[] = [
     location: "Ann Arbor, MI",
     focus: ["pure-math", "applied-math", "statistics"],
     description:
-      "Michigan has an exceptionally strong and well-rounded mathematics program with particular depth in algebra, number theory, and applied mathematics. Its undergraduate program is consistently ranked among the top five in the country.",
+      "Michigan has an exceptionally strong and well-rounded mathematics program with particular depth in algebra, number theory, and applied mathematics, plus broad options for undergraduates.",
     highlights: [
       "Exceptionally strong algebraic geometry and number theory groups",
       "Combined BS/MS program options",
@@ -156,7 +148,6 @@ export const programs: Program[] = [
     ],
     notableAreas: ["Number Theory", "Algebraic Geometry", "Applied Math", "Statistics"],
     url: "https://lsa.umich.edu/math",
-    ranking: 8,
   },
   {
     id: "9",
@@ -174,7 +165,6 @@ export const programs: Program[] = [
     ],
     notableAreas: ["Analysis", "Combinatorics", "PDEs", "Applied & Computational Math"],
     url: "https://ww3.math.ucla.edu",
-    ranking: 9,
   },
   {
     id: "10",
@@ -183,16 +173,15 @@ export const programs: Program[] = [
     location: "Pittsburgh, PA",
     focus: ["applied-math", "statistics"],
     description:
-      "CMU's Mathematical Sciences department is uniquely positioned at the intersection of mathematics and computer science. The department has world-class programs in combinatorics, logic, and statistics, with direct pipelines to CMU's top-ranked CS and ML programs.",
+      "CMU's Mathematical Sciences department is uniquely positioned at the intersection of mathematics and computer science, with programs in combinatorics, logic, statistics, and connections to CS and ML.",
     highlights: [
       "World-class combinatorics and discrete mathematics program",
-      "Direct integration with top-ranked CS and ML programs",
+      "Direct integration with CS and ML programs",
       "Statistics & Data Science major offered jointly with CS",
       "Strong Mathematical Finance and Computational Finance programs",
     ],
     notableAreas: ["Combinatorics", "Logic", "Statistics", "Computational Math"],
     url: "https://math.cmu.edu",
-    ranking: 10,
   },
 ];
 

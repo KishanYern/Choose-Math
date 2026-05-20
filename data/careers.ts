@@ -4,6 +4,11 @@ export interface DayEntry {
   type: "work" | "meeting" | "analysis" | "study";
 }
 
+export interface Source {
+  label: string;
+  url: string;
+}
+
 export interface CareerTrack {
   id: string;
   slug: string;
@@ -17,6 +22,8 @@ export interface CareerTrack {
   employers: string[];
   dayInLife: DayEntry[];
   growthOutlook: string;
+  salarySource: Source;
+  outlookSource?: Source;
   tags: string[];
   featured?: boolean;
 }
@@ -32,6 +39,10 @@ export const careers: CareerTrack[] = [
     description:
       "Quantitative finance sits at the intersection of advanced mathematics, statistics, and financial markets. Quants build and deploy models for derivative pricing, algorithmic trading, portfolio optimization, and risk management. The field demands mastery of stochastic calculus, probability theory, and numerical methods — along with strong programming skills in Python and C++.",
     salaryRange: { min: 130000, max: 300000 },
+    salarySource: {
+      label: "Glassdoor quantitative analyst compensation estimates",
+      url: "https://www.glassdoor.com/Salaries/quantitative-analyst-salary-SRCH_KO0,20.htm",
+    },
     requiredSkills: [
       "Stochastic Calculus",
       "Probability Theory",
@@ -64,7 +75,7 @@ export const careers: CareerTrack[] = [
       { time: "3:00 PM", activity: "Backtest new alpha signal on 10 years of tick data", type: "analysis" },
       { time: "5:00 PM", activity: "Write research note on factor model improvements", type: "work" },
     ],
-    growthOutlook: "Strong and stable — demand for sophisticated risk modeling and algorithmic strategies continues to grow, particularly in crypto, volatility arbitrage, and systematic macro.",
+    growthOutlook: "Strong and stable — compensation varies widely by firm and bonus structure, with public salary estimates showing especially high total compensation in quantitative analyst roles.",
     tags: ["Finance", "High Salary", "Research", "Programming"],
     featured: true,
   },
@@ -77,7 +88,15 @@ export const careers: CareerTrack[] = [
       "Design and train models that power recommendation systems, language models, and autonomous systems at top tech companies.",
     description:
       "Machine learning engineers and AI researchers apply linear algebra, probability, optimization, and calculus to build systems that learn from data. The mathematical foundations are central — understanding gradient descent, eigendecompositions, kernel methods, and information theory separates strong practitioners from average ones. Math majors are highly sought after for research roles at AI labs and ML-heavy tech companies.",
-    salaryRange: { min: 150000, max: 400000 },
+    salaryRange: { min: 120000, max: 250000 },
+    salarySource: {
+      label: "BLS computer and information research scientists",
+      url: "https://www.bls.gov/ooh/computer-and-information-technology/computer-and-information-research-scientists.htm",
+    },
+    outlookSource: {
+      label: "BLS 2024-34 projection",
+      url: "https://www.bls.gov/ooh/computer-and-information-technology/computer-and-information-research-scientists.htm",
+    },
     requiredSkills: [
       "Linear Algebra",
       "Multivariable Calculus",
@@ -103,7 +122,7 @@ export const careers: CareerTrack[] = [
       { time: "3:30 PM", activity: "Evaluate model performance against benchmarks", type: "analysis" },
       { time: "5:00 PM", activity: "Write internal research report on findings", type: "work" },
     ],
-    growthOutlook: "Explosive — AI investment is at an all-time high and demand for mathematically rigorous ML researchers and engineers shows no sign of slowing.",
+    growthOutlook: "Very strong — BLS projects computer and information research scientist employment to grow 20% from 2024 to 2034, much faster than average.",
     tags: ["Tech", "Research", "High Growth", "Programming"],
     featured: true,
   },
@@ -117,6 +136,14 @@ export const careers: CareerTrack[] = [
     description:
       "Actuaries are the mathematical backbone of the insurance and risk management industry. They build models to quantify uncertainty — from the likelihood of natural disasters to life expectancy tables — and translate those models into pricing strategies, reserves, and capital requirements. The career path involves passing a rigorous series of professional exams alongside on-the-job training.",
     salaryRange: { min: 80000, max: 200000 },
+    salarySource: {
+      label: "BLS actuaries",
+      url: "https://www.bls.gov/ooh/math/actuaries.htm",
+    },
+    outlookSource: {
+      label: "BLS 2024-34 projection",
+      url: "https://www.bls.gov/ooh/math/actuaries.htm",
+    },
     requiredSkills: [
       "Probability Theory",
       "Statistics",
@@ -149,7 +176,7 @@ export const careers: CareerTrack[] = [
       { time: "2:30 PM", activity: "Peer review of pricing assumptions for new product line", type: "meeting" },
       { time: "4:00 PM", activity: "Draft report on experience study results", type: "work" },
     ],
-    growthOutlook: "Consistently ranked among top careers for job satisfaction and stability. Growing demand in health insurance, climate risk modeling, and cybersecurity risk.",
+    growthOutlook: "BLS projects actuary employment to grow 22% from 2024 to 2034, much faster than average, with demand in insurance, enterprise risk, and climate risk modeling.",
     tags: ["Insurance", "Stable", "Exams", "Finance"],
     featured: true,
   },
@@ -163,6 +190,14 @@ export const careers: CareerTrack[] = [
     description:
       "Cryptographers apply number theory, abstract algebra, and computational complexity to design and analyze the systems that keep information secure. From RSA encryption to elliptic curve cryptography and post-quantum algorithms, modern cryptography is deeply mathematical. Opportunities span government agencies (NSA, CISA), tech companies (Apple, Google), blockchain startups, and academic research.",
     salaryRange: { min: 120000, max: 250000 },
+    salarySource: {
+      label: "BLS information security analysts",
+      url: "https://www.bls.gov/ooh/computer-and-information-technology/information-security-analysts.htm",
+    },
+    outlookSource: {
+      label: "BLS 2024-34 projection",
+      url: "https://www.bls.gov/ooh/computer-and-information-technology/information-security-analysts.htm",
+    },
     requiredSkills: [
       "Number Theory",
       "Abstract Algebra",
@@ -187,7 +222,7 @@ export const careers: CareerTrack[] = [
       { time: "2:00 PM", activity: "Work through algebraic proof for protocol security reduction", type: "study" },
       { time: "4:00 PM", activity: "Write formal security proof for new signature scheme", type: "work" },
     ],
-    growthOutlook: "Growing rapidly — post-quantum cryptography standardization, blockchain expansion, and escalating cybersecurity threats drive continuous demand.",
+    growthOutlook: "Growing rapidly — BLS projects information security analyst employment to grow 29% from 2024 to 2034, while post-quantum cryptography and cybersecurity needs continue to expand.",
     tags: ["Security", "Research", "Government", "Blockchain"],
   },
   {
@@ -200,6 +235,14 @@ export const careers: CareerTrack[] = [
     description:
       "Operations research (OR) applies mathematical optimization and statistical modeling to make better decisions in complex systems. OR professionals work on problems like airline scheduling, supply chain optimization, hospital staffing, and logistics routing. The field draws on linear programming, combinatorics, graph theory, simulation, and game theory.",
     salaryRange: { min: 90000, max: 180000 },
+    salarySource: {
+      label: "BLS operations research analysts",
+      url: "https://www.bls.gov/ooh/math/operations-research-analysts.htm",
+    },
+    outlookSource: {
+      label: "BLS 2024-34 projection",
+      url: "https://www.bls.gov/ooh/math/operations-research-analysts.htm",
+    },
     requiredSkills: [
       "Linear Programming",
       "Integer Optimization",
@@ -225,7 +268,7 @@ export const careers: CareerTrack[] = [
       { time: "3:30 PM", activity: "Present optimization findings to operations leadership", type: "meeting" },
       { time: "4:30 PM", activity: "Review journal paper on vehicle routing problem algorithms", type: "study" },
     ],
-    growthOutlook: "Strong — e-commerce and logistics boom, healthcare systems optimization, and climate-related resource allocation problems create sustained demand.",
+    growthOutlook: "Strong — BLS projects operations research analyst employment to grow 21% from 2024 to 2034 as organizations use optimization and analytics to improve decisions.",
     tags: ["Logistics", "Consulting", "Industry", "Optimization"],
   },
   {
@@ -238,6 +281,14 @@ export const careers: CareerTrack[] = [
     description:
       "Academic mathematicians pursue original research at the frontier of human knowledge — proving theorems, discovering new structures, and building the theoretical foundations that other fields rely on decades later. The path typically runs through a PhD and postdoctoral work before a tenure-track faculty position. The rewards are intellectual freedom, deep mastery, and genuine discovery.",
     salaryRange: { min: 70000, max: 160000 },
+    salarySource: {
+      label: "BLS postsecondary mathematical science teachers",
+      url: "https://www.bls.gov/oes/current/oes251022.htm",
+    },
+    outlookSource: {
+      label: "BLS employment projections",
+      url: "https://data.bls.gov/projections/nationalMatrix?ioType=o&queryParams=25-1022",
+    },
     requiredSkills: [
       "Proof Writing",
       "Abstract Reasoning",
@@ -270,7 +321,7 @@ export const careers: CareerTrack[] = [
       { time: "3:00 PM", activity: "Collaboration call with co-author at Oxford", type: "meeting" },
       { time: "4:00 PM", activity: "Deep work: revise paper proof for Annals submission", type: "work" },
     ],
-    growthOutlook: "Competitive — tenure-track positions are limited but demand for math PhD graduates spills over into industry, government, and finance at high levels.",
+    growthOutlook: "Competitive — tenure-track openings are limited, and BLS projections for postsecondary mathematical science teachers show modest growth compared with industry math roles.",
     tags: ["Research", "Teaching", "PhD Required", "Flexible"],
   },
   {
@@ -283,6 +334,14 @@ export const careers: CareerTrack[] = [
     description:
       "Data scientists bridge mathematics, statistics, and software engineering to answer business and scientific questions from data. Math majors excel here because they deeply understand the statistical foundations that many practitioners treat as black boxes. Strong mathematical training enables building better models, catching subtle errors, and pushing beyond off-the-shelf tools.",
     salaryRange: { min: 100000, max: 200000 },
+    salarySource: {
+      label: "BLS data scientists",
+      url: "https://www.bls.gov/ooh/math/data-scientists.htm",
+    },
+    outlookSource: {
+      label: "BLS 2024-34 projection",
+      url: "https://www.bls.gov/ooh/math/data-scientists.htm",
+    },
     requiredSkills: [
       "Statistics",
       "Linear Algebra",
@@ -308,7 +367,7 @@ export const careers: CareerTrack[] = [
       { time: "3:00 PM", activity: "Present statistical findings to non-technical stakeholders", type: "meeting" },
       { time: "4:30 PM", activity: "Review causal inference paper for journal club", type: "study" },
     ],
-    growthOutlook: "Excellent — data-driven decision making continues to expand across every industry. Mathematically strong data scientists command significant premiums over those without rigorous quantitative backgrounds.",
+    growthOutlook: "Excellent — BLS projects data scientist employment to grow 34% from 2024 to 2034, much faster than average, as data-driven work expands across industries.",
     tags: ["Tech", "Versatile", "High Demand", "Industry"],
   },
 ];

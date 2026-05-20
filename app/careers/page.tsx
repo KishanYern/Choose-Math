@@ -10,17 +10,17 @@ export const metadata: Metadata = {
 
 export default function CareersPage() {
   return (
-    <div className="min-h-screen bg-slate-950">
+    <div className="min-h-screen bg-white dark:bg-slate-950">
       {/* Header */}
-      <div className="border-b border-slate-800 bg-slate-900/40">
+      <div className="border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
-          <p className="text-indigo-400 text-xs font-medium uppercase tracking-widest mb-3">Career Paths</p>
-          <h1 className="text-3xl sm:text-4xl font-bold text-slate-100 mb-3">
+          <p className="text-indigo-600 dark:text-indigo-400 text-xs font-medium uppercase tracking-widest mb-3">Career Paths</p>
+          <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-slate-100 mb-3">
             Where Math Takes You
           </h1>
-          <p className="text-slate-400 text-lg max-w-2xl leading-relaxed">
-            A mathematics degree is a passport to some of the highest-impact, highest-compensation
-            careers in the modern economy. Explore the full landscape.
+          <p className="text-slate-600 dark:text-slate-400 text-lg max-w-2xl leading-relaxed">
+            A mathematics degree is a passport to high-impact quantitative careers across the
+            modern economy. Explore the full landscape.
           </p>
         </div>
       </div>
@@ -34,7 +34,7 @@ export default function CareersPage() {
         </div>
 
         {/* Bottom context */}
-        <div className="mt-16 pt-10 border-t border-slate-800">
+        <div className="mt-16 pt-10 border-t border-slate-200 dark:border-slate-800">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {[
               {
@@ -54,11 +54,11 @@ export default function CareersPage() {
               },
             ].map((item) => (
               <div key={item.title} className="flex gap-4">
-                <span className="text-2xl math-symbol text-indigo-400/50 font-light flex-shrink-0 mt-0.5">
+                <span className="text-2xl math-symbol text-indigo-400/70 dark:text-indigo-400/50 font-light shrink-0 mt-0.5">
                   {item.symbol}
                 </span>
                 <div>
-                  <h3 className="text-slate-300 font-semibold text-sm mb-1">{item.title}</h3>
+                  <h3 className="text-slate-800 dark:text-slate-300 font-semibold text-sm mb-1">{item.title}</h3>
                   <p className="text-slate-500 text-sm leading-relaxed">{item.desc}</p>
                 </div>
               </div>
