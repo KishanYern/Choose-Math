@@ -1,36 +1,137 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ∑ ChooseMath
+
+> Is Mathematics the right career for you? Explore career paths, top programs, alumni stories, and take a personalized quiz to find your direction.
+
+A static informational website for mathematics students — modeled after [WhyPharmacy](https://whypharmacy.org/) but built for math. Dark-mode-first, fast, and fully pre-rendered.
+
+**Live site:** _Coming soon (deploy to Vercel)_
+**GitHub:** [KishanYern/Choose-Math](https://github.com/KishanYern/Choose-Math)
+
+---
+
+## Tech Stack
+
+| Tool | Version | Purpose |
+|---|---|---|
+| [Next.js](https://nextjs.org) | 16 (App Router) | Framework, SSG, routing |
+| [TypeScript](https://www.typescriptlang.org) | 5 | Type safety |
+| [Tailwind CSS](https://tailwindcss.com) | v4 | Styling |
+| [next-themes](https://github.com/pacocoursey/next-themes) | 0.4 | Light/dark toggle |
+| [Inter](https://fonts.google.com/specimen/Inter) + [JetBrains Mono](https://fonts.google.com/specimen/JetBrains+Mono) | — | Typography |
+
+All 18 pages are pre-rendered as static HTML at build time — no server required.
+
+---
+
+## Pages
+
+| Route | Description |
+|---|---|
+| `/` | Landing — hero, stats bar, persona router, featured careers, alumni snippets, FAQ |
+| `/quiz` | 8-question career quiz → Pure Math / Applied Math / Data Science / Actuarial |
+| `/careers` | Grid of all 7 career paths with salary ranges |
+| `/careers/[slug]` | Career detail — day-in-the-life, required skills, employers, salary |
+| `/roadmap` | 6-step path from high school to career with action items and pro tips |
+| `/programs` | 10 top national math programs, filterable by Pure / Applied / Statistics |
+| `/stories` | 6 static alumni profiles with quotes and career trajectories |
+| `/resources` | 20+ resources — textbooks, courses, competitions, tools, communities |
+| `/checklist` | Skills checklist with `localStorage` persistence and per-category progress bars |
+
+---
+
+## Project Structure
+
+```
+app/                    ← Next.js App Router pages
+  layout.tsx            ← Root layout: Nav, Footer, ThemeProvider
+  page.tsx              ← Landing page
+  quiz/page.tsx
+  careers/page.tsx
+  careers/[slug]/page.tsx
+  roadmap/page.tsx
+  programs/page.tsx
+  stories/page.tsx
+  resources/page.tsx
+  checklist/page.tsx
+
+components/             ← Shared UI components
+  Nav.tsx               ← Sticky nav + dark/light toggle
+  Footer.tsx
+  ThemeProvider.tsx     ← next-themes wrapper (client)
+  ThemeToggle.tsx       ← Sun/moon toggle button (client)
+  CareerCard.tsx
+  StoryCard.tsx
+  FAQAccordion.tsx      ← Client component
+  QuizEngine.tsx        ← Quiz state machine (client)
+  ProgramsFilter.tsx    ← Focus-area filter (client)
+  ChecklistTracker.tsx  ← localStorage checklist (client)
+
+data/                   ← All static content as typed TypeScript arrays
+  careers.ts            ← CareerTrack[] — 7 career paths
+  programs.ts           ← Program[] — 10 top programs
+  quiz.ts               ← QuizQuestion[] + scoring logic
+  stories.ts            ← Story[] — 6 alumni profiles
+  resources.ts          ← Resource[] — 20+ curated resources
+  roadmap.ts            ← RoadmapStep[] — 6-step roadmap
+  checklist.ts          ← ChecklistCategory[] — 7 skill categories
+```
+
+---
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+# Install dependencies
+npm install
+
+# Run development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+# Type-check
+npx tsc --noEmit
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# Production build
+npm run build
+```
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## Design System
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Dark mode (default):** `#0f172a` slate base, indigo/violet accent (`#818cf8`)
+- **Light mode:** white/slate-50 base, indigo accent (`#6366f1`)
+- **Toggle:** persisted via `next-themes` with `defaultTheme="dark"`
+- **Fonts:** Inter (UI) + JetBrains Mono (math symbols, code)
+- **Math symbols** (∑ ∫ ∂ ∇ λ ∞) used as decorative elements throughout
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## Roadmap
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+**Phase 1 (current):** Static content site — all data hardcoded in `data/` files.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**Phase 2 (planned):**
+- Firebase Firestore for dynamic alumni stories
+- Firebase Auth for contributor accounts
+- Contributor submission portal (`/contribute`)
+- Dynamic `/contributors/[id]` profile pages
+
+---
+
+## Deployment
+
+Deploy to [Vercel](https://vercel.com) in one click — no configuration needed for a Next.js static site.
+
+```bash
+npx vercel
+```
+
+Or connect the GitHub repo at [vercel.com/new](https://vercel.com/new) for automatic deploys on every push to `main`.
+
+---
+
+MIT License · Built by [Kishan Yerneni](https://github.com/KishanYern)
