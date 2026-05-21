@@ -1,10 +1,26 @@
 import type { Story } from "@/data/stories";
+import { InkCircle, InkPaperclip } from "@/components/Ink";
 
-export function StoryCard({ story }: { story: Story }) {
+const tapeVariants = ["washi-tape", "washi-tape-blue", "washi-tape-yellow"] as const;
+
+export function StoryCard({ story, index = 0 }: { story: Story; index?: number }) {
+  const tiltClass = index % 3 === 1 ? "tilt-right" : index % 3 === 2 ? "" : "tilt-left";
+  const tape = tapeVariants[index % 3];
+  const usePaperclip = index % 2 === 1;
+
   return (
-    <article className="bg-paper-2 border border-rule p-6 flex flex-col gap-4 card-hover">
-      {/* Opening quote mark */}
-      <div className="font-display text-5xl text-rule leading-none select-none" aria-hidden>
+    <article className={`bg-paper-2 border border-rule p-6 flex flex-col gap-4 card-hover dropshadow-paper relative ${tiltClass}`}>
+      {/* Tape or paperclip decoration */}
+      {usePaperclip ? (
+        <span className="absolute -top-1 left-3 text-ink-faint">
+          <InkPaperclip size={18} className="text-ink-faint opacity-50" />
+        </span>
+      ) : (
+        <span className={tape} aria-hidden="true" />
+      )}
+
+      {/* Opening quote mark — marker red, large */}
+      <div className="font-display text-6xl text-marker leading-none select-none opacity-80 -mb-2" aria-hidden>
         &ldquo;
       </div>
 
@@ -16,13 +32,21 @@ export function StoryCard({ story }: { story: Story }) {
       {/* Thin rule */}
       <div className="border-t border-rule" />
 
-      {/* Byline */}
+      {/* Byline with InkCircle avatar */}
       <div className="flex items-center gap-3">
-        <div className="w-8 h-8 border border-rule flex items-center justify-center font-mono text-xs text-ink-muted shrink-0">
-          {story.imageInitials}
+        <div className="relative shrink-0 w-10 h-10 flex items-center justify-center">
+          {/* Plain initials box */}
+          <div className="w-8 h-8 border border-rule flex items-center justify-center font-mono text-xs text-ink-muted bg-paper-2">
+            {story.imageInitials}
+          </div>
+          {/* Hand-drawn circle overlapping, slightly off-center */}
+          <span className="absolute -top-1 -left-1 text-ink-faint">
+            <InkCircle size={38} className="text-ink-faint opacity-60" />
+          </span>
         </div>
         <div className="min-w-0">
-          <p className="text-sm font-medium text-ink truncate">{story.name}</p>
+          {/* Signature-style name — italic Newsreader */}
+          <p className="font-display italic text-sm text-ink truncate">{story.name}</p>
           <p className="font-mono text-[11px] text-ink-faint truncate tracking-wider">
             {story.title} · {story.company}
           </p>

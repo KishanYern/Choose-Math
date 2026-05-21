@@ -129,3 +129,93 @@ body {
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 2px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--ink-faint); }
+
+/* ── Marker highlight (highlighter swipe behind text) ───────────────────── */
+.marker-highlight {
+  background: linear-gradient(
+    180deg,
+    transparent 52%,
+    var(--highlight) 52%,
+    var(--highlight) 91%,
+    transparent 91%
+  );
+  padding: 0 0.12em;
+}
+
+/* ── Paper grain (subtle noise texture) ─────────────────────────────────── */
+.paper-grain {
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"),
+    none;
+  background-repeat: repeat;
+  background-size: 200px 200px, auto;
+}
+
+/* ── Tilt utilities (notebook-pinned card feel) ──────────────────────────── */
+.tilt-left  { transform: rotate(-1.3deg); }
+.tilt-right { transform: rotate(1.3deg); }
+
+@media (prefers-reduced-motion: reduce) {
+  .tilt-left, .tilt-right { transform: none; }
+}
+
+/* ── Washi tape strip ────────────────────────────────────────────────────── */
+.washi-tape {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-2deg);
+  width: 56px;
+  height: 22px;
+  background: rgba(193, 39, 45, 0.16);
+  border-radius: 2px;
+  pointer-events: none;
+}
+.washi-tape-blue {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%) rotate(1.5deg);
+  width: 56px;
+  height: 22px;
+  background: rgba(29, 53, 87, 0.14);
+  border-radius: 2px;
+  pointer-events: none;
+}
+.washi-tape-yellow {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-1deg);
+  width: 56px;
+  height: 22px;
+  background: rgba(244, 220, 139, 0.5);
+  border-radius: 2px;
+  pointer-events: none;
+}
+
+/* ── Ink draw-on animation ───────────────────────────────────────────────── */
+@keyframes ink-draw {
+  from { stroke-dashoffset: 200; opacity: 0.4; }
+  to   { stroke-dashoffset: 0;   opacity: 1; }
+}
+.ink-draw path {
+  stroke-dasharray: 200;
+  stroke-dashoffset: 0;
+  animation: ink-draw 0.9s ease-out forwards;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ink-draw path { animation: none; stroke-dashoffset: 0; }
+}
+
+/* ── Pinned-paper drop shadow ────────────────────────────────────────────── */
+.dropshadow-paper {
+  box-shadow:
+    2px 3px 0 var(--rule),
+    6px 8px 18px rgba(31, 29, 26, 0.07);
+}
+.dark .dropshadow-paper {
+  box-shadow:
+    2px 3px 0 var(--rule),
+    6px 8px 18px rgba(0, 0, 0, 0.25);
+}
