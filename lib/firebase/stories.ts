@@ -23,7 +23,7 @@ export interface Story {
   tags: string[];
   imageInitials: string;
   accentColor: string;
-  status: "pending" | "approved";
+  status?: "pending" | "approved";
   submittedBy?: string;
   submittedByEmail?: string;
   seedOrder?: number;
