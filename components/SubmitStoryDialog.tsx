@@ -8,8 +8,6 @@ interface SubmitStoryDialogProps {
   onSuccess?: () => void;
 }
 
-const ACCENT_COLORS = ["indigo", "violet", "cyan", "amber", "emerald", "rose"] as const;
-
 const emptyForm: StoryFormData = {
   name: "",
   title: "",

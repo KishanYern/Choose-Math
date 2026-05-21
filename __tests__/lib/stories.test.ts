@@ -1,7 +1,14 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
+const mockTxGet = vi.fn();
+const mockTxSet = vi.fn();
+const mockTransaction = { get: mockTxGet, set: mockTxSet };
+
+const mockRunTransaction = vi.fn().mockImplementation(async (_db: unknown, fn: (tx: typeof mockTransaction) => Promise<void>) => {
+  await fn(mockTransaction);
+});
+const mockDoc = vi.fn().mockReturnValue({ id: "new-story-id" });
 const mockGetDocs = vi.fn();
-const mockAddDoc = vi.fn();
 const mockCollection = vi.fn().mockReturnValue("collection-ref");
 const mockQuery = vi.fn().mockReturnValue("query-ref");
 const mockWhere = vi.fn().mockReturnValue("where-clause");
@@ -19,12 +26,13 @@ vi.mock("@/lib/firebase/client", () => ({
 vi.mock("firebase/firestore", () => ({
   getFirestore: vi.fn().mockReturnValue({}),
   collection: mockCollection,
+  doc: mockDoc,
   query: mockQuery,
   where: mockWhere,
   orderBy: mockOrderBy,
   getDocs: mockGetDocs,
-  addDoc: mockAddDoc,
   serverTimestamp: mockServerTimestamp,
+  runTransaction: mockRunTransaction,
 }));
 
 vi.mock("firebase/app", () => ({
@@ -84,6 +92,8 @@ describe("submitStory", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mockAuth.currentUser = null;
+    // Default: no existing counter doc (new day / first submission)
+    mockTxGet.mockResolvedValue({ exists: () => false });
   });
 
   it("throws when no user is signed in", async () => {
@@ -94,13 +104,13 @@ describe("submitStory", () => {
 
   it("writes a doc with status pending and submittedBy = uid", async () => {
     mockAuth.currentUser = { uid: "u42", email: "a@b.com" };
-    mockAddDoc.mockResolvedValueOnce({ id: "new-story-id" });
 
     const { submitStory } = await import("@/lib/firebase/stories");
     const id = await submitStory(validForm);
 
     expect(id).toBe("new-story-id");
-    const written = mockAddDoc.mock.calls[0][1];
+    // tx.set is called twice: [0] = rate-limit counter, [1] = story doc
+    const written = mockTxSet.mock.calls[1][1];
     expect(written.status).toBe("pending");
     expect(written.submittedBy).toBe("u42");
     expect(written.submittedByEmail).toBe("a@b.com");
@@ -108,23 +118,21 @@ describe("submitStory", () => {
 
   it("derives imageInitials from the name", async () => {
     mockAuth.currentUser = { uid: "u1", email: "x@y.com" };
-    mockAddDoc.mockResolvedValueOnce({ id: "x" });
 
     const { submitStory } = await import("@/lib/firebase/stories");
     await submitStory({ ...validForm, name: "Jane Doe" });
 
-    const written = mockAddDoc.mock.calls[0][1];
+    const written = mockTxSet.mock.calls[1][1];
     expect(written.imageInitials).toBe("JD");
   });
 
   it("does not allow caller to set status to approved", async () => {
     mockAuth.currentUser = { uid: "u1", email: "x@y.com" };
-    mockAddDoc.mockResolvedValueOnce({ id: "x" });
 
     const { submitStory } = await import("@/lib/firebase/stories");
     await submitStory(validForm);
 
-    const written = mockAddDoc.mock.calls[0][1];
+    const written = mockTxSet.mock.calls[1][1];
     expect(written.status).not.toBe("approved");
   });
 });

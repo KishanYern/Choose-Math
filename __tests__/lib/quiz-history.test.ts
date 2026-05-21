@@ -1,6 +1,13 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
-const mockAddDoc = vi.fn();
+const mockTxGet = vi.fn();
+const mockTxSet = vi.fn();
+const mockTransaction = { get: mockTxGet, set: mockTxSet };
+
+const mockRunTransaction = vi.fn().mockImplementation(async (_db: unknown, fn: (tx: typeof mockTransaction) => Promise<void>) => {
+  await fn(mockTransaction);
+});
+const mockDoc = vi.fn().mockReturnValue({ id: "qr-1" });
 const mockGetDocs = vi.fn();
 const mockCollection = vi.fn().mockReturnValue("col-ref");
 const mockQuery = vi.fn().mockReturnValue("query-ref");
@@ -18,11 +25,12 @@ vi.mock("@/lib/firebase/client", () => ({
 vi.mock("firebase/firestore", () => ({
   getFirestore: vi.fn().mockReturnValue({}),
   collection: mockCollection,
+  doc: mockDoc,
   query: mockQuery,
   orderBy: mockOrderBy,
-  addDoc: mockAddDoc,
   getDocs: mockGetDocs,
   serverTimestamp: mockServerTimestamp,
+  runTransaction: mockRunTransaction,
 }));
 
 vi.mock("firebase/app", () => ({
@@ -44,24 +52,27 @@ describe("saveQuizResult", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mockAuth.currentUser = null;
+    // Default: no existing counter doc
+    mockTxGet.mockResolvedValue({ exists: () => false });
   });
 
   it("is a no-op when signed out", async () => {
     mockAuth.currentUser = null;
     const { saveQuizResult } = await import("@/lib/firebase/quiz");
     await saveQuizResult(params);
-    expect(mockAddDoc).not.toHaveBeenCalled();
+    expect(mockRunTransaction).not.toHaveBeenCalled();
+    expect(mockTxSet).not.toHaveBeenCalled();
   });
 
   it("writes under users/{uid}/quizResults when signed in", async () => {
     mockAuth.currentUser = { uid: "u99" };
-    mockAddDoc.mockResolvedValueOnce({ id: "qr-1" });
 
     const { saveQuizResult } = await import("@/lib/firebase/quiz");
     await saveQuizResult(params);
 
     expect(mockCollection).toHaveBeenCalledWith(expect.anything(), "users", "u99", "quizResults");
-    const written = mockAddDoc.mock.calls[0][1];
+    // tx.set is called twice: [0] = rate-limit counter, [1] = quiz result doc
+    const written = mockTxSet.mock.calls[1][1];
     expect(written.resultType).toBe("pure-math");
     expect(written.resultTitle).toBe("Pure Mathematics");
     expect(written.level).toBe("advanced");
