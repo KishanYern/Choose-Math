@@ -2,17 +2,81 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
+    // ── Helpers ───────────────────────────────────────────────────────────────
+
+    function isStr(val, maxLen) {
+      return val is string && val.size() > 0 && val.size() <= maxLen;
+    }
+
+    function isValidTag(tag) {
+      return tag is string && tag.size() > 0 && tag.size() <= 40;
+    }
+
+    function storyFieldsValid(data) {
+      return data.keys().hasOnly([
+          'name','title','company','degree','gradYear','school',
+          'quote','fullStory','tags','imageInitials','accentColor',
+          'status','submittedBy','submittedByEmail','submittedAt'
+        ])
+        && isStr(data.name, 80)
+        && isStr(data.title, 120)
+        && isStr(data.company, 120)
+        && isStr(data.degree, 120)
+        && isStr(data.school, 160)
+        && isStr(data.quote, 200)
+        && isStr(data.fullStory, 3000)
+        && data.tags is list
+        && data.tags.size() <= 5
+        && (data.tags.size() == 0 || isValidTag(data.tags[0]))
+        && data.gradYear is int
+        && data.gradYear >= 1950
+        && data.gradYear <= 2100
+        && data.status == 'pending'
+        && data.submittedBy == request.auth.uid;
+    }
+
+    function quizFieldsValid(data, uid) {
+      return data.keys().hasOnly(['level','resultType','resultTitle','scoredAt'])
+        && data.level in ['beginner','intermediate','advanced']
+        && data.resultType in ['pure-math','applied-math','data-science','actuarial']
+        && isStr(data.resultTitle, 200);
+    }
+
+    // ── Stories ───────────────────────────────────────────────────────────────
+
     match /stories/{id} {
       allow read: if resource.data.status == "approved";
       allow create: if request.auth != null
-                    && request.resource.data.status == "pending"
-                    && request.resource.data.submittedBy == request.auth.uid;
+                    && storyFieldsValid(request.resource.data);
       allow update, delete: if false;
     }
 
+    // ── Quiz results ──────────────────────────────────────────────────────────
+
     match /users/{uid}/quizResults/{id} {
-      allow read, create: if request.auth != null && request.auth.uid == uid;
+      allow read, create: if request.auth != null
+                          && request.auth.uid == uid
+                          && quizFieldsValid(request.resource.data, uid);
       allow update, delete: if false;
+    }
+
+    // ── Rate-limit counters ───────────────────────────────────────────────────
+    // Written atomically alongside story/quiz creates via transactions.
+    // The server enforces the cap; this collection just stores counts.
+
+    match /rateLimits/{uid} {
+      allow read: if request.auth != null && request.auth.uid == uid;
+      allow write: if request.auth != null
+                   && request.auth.uid == uid
+                   && request.resource.data.keys().hasOnly(['storiesToday','quizzesToday','dayKey'])
+                   && request.resource.data.storiesToday is int
+                   && request.resource.data.storiesToday >= 0
+                   && request.resource.data.storiesToday <= 3
+                   && request.resource.data.quizzesToday is int
+                   && request.resource.data.quizzesToday >= 0
+                   && request.resource.data.quizzesToday <= 20
+                   && request.resource.data.dayKey is string
+                   && request.resource.data.dayKey.size() == 10;
     }
 
   }

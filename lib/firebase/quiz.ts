@@ -1,6 +1,14 @@
-import { collection, addDoc, getDocs, orderBy, query, serverTimestamp } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDocs,
+  orderBy,
+  query,
+  serverTimestamp,
+} from "firebase/firestore";
 import { db } from "./client";
 import { auth } from "./client";
+import { withRateLimit } from "./rateLimit";
 import type { ExperienceLevel, ResultType } from "@/data/quiz";
 
 export interface QuizHistoryEntry {
@@ -19,10 +27,19 @@ export async function saveQuizResult(params: {
   const user = auth.currentUser;
   if (!user) return; // silent no-op for anonymous users
 
-  await addDoc(collection(db, "users", user.uid, "quizResults"), {
-    ...params,
-    scoredAt: serverTimestamp(),
-  });
+  const newRef = doc(collection(db, "users", user.uid, "quizResults"));
+
+  try {
+    await withRateLimit(user.uid, "quizzesToday", (tx) => {
+      tx.set(newRef, {
+        ...params,
+        scoredAt: serverTimestamp(),
+      });
+    });
+  } catch {
+    // Silently swallow rate limit errors on quiz saves — this is auto-save,
+    // no need to surface an error to the user.
+  }
 }
 
 export async function listMyQuizResults(): Promise<QuizHistoryEntry[]> {

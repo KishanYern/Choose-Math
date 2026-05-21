@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import { AuthGate } from "./AuthGate";
-import { submitStory, type StoryFormData } from "@/lib/firebase/stories";
+import { submitStory, RateLimitError, type StoryFormData } from "@/lib/firebase/stories";
 
 interface SubmitStoryDialogProps {
   onSuccess?: () => void;
@@ -29,6 +29,7 @@ export function SubmitStoryDialog({ onSuccess }: SubmitStoryDialogProps) {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [cooldown, setCooldown] = useState(false);
 
   function open() {
     setForm(emptyForm);
@@ -65,9 +66,15 @@ export function SubmitStoryDialog({ onSuccess }: SubmitStoryDialogProps) {
     try {
       await submitStory(form);
       setSubmitted(true);
+      setCooldown(true);
+      setTimeout(() => setCooldown(false), 10_000);
       onSuccess?.();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong.");
+      if (err instanceof RateLimitError) {
+        setError(err.message);
+      } else {
+        setError(err instanceof Error ? err.message : "Something went wrong.");
+      }
     } finally {
       setSubmitting(false);
     }
@@ -237,10 +244,10 @@ export function SubmitStoryDialog({ onSuccess }: SubmitStoryDialogProps) {
                   </button>
                   <button
                     type="submit"
-                    disabled={submitting}
+                    disabled={submitting || cooldown}
                     className="font-mono text-xs tracking-wider px-6 py-2.5 bg-accent text-paper hover:bg-ink disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                   >
-                    {submitting ? "submitting…" : "submit story →"}
+                    {submitting ? "submitting…" : cooldown ? "submitted ✓" : "submit story →"}
                   </button>
                 </div>
               </form>
