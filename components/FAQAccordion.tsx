@@ -60,40 +60,36 @@ export function FAQAccordion() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
-    <div className="space-y-2">
+    <div>
       {faqs.map((faq, i) => (
-        <div
-          key={i}
-          className="border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden"
-        >
+        <div key={i} className="border-b border-rule">
           <button
             onClick={() => setOpenIndex(openIndex === i ? null : i)}
-            className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left bg-slate-50 dark:bg-slate-900/50 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors"
+            className="w-full flex items-start gap-4 py-5 text-left hover:bg-paper-2 transition-colors px-2 -mx-2"
           >
-            <span className="font-medium text-slate-800 dark:text-slate-100 text-sm sm:text-base">{faq.question}</span>
-            <svg
-              className={`w-4 h-4 flex-shrink-0 text-indigo-400 transition-transform duration-200 ${
-                openIndex === i ? "rotate-180" : ""
-              }`}
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-            </svg>
+            <span className="font-mono text-xs text-ink-faint shrink-0 mt-0.5 tracking-wider">
+              Q.{String(i + 1).padStart(2, "0")}
+            </span>
+            <span className="font-display text-base text-ink leading-snug flex-1">
+              {faq.question}
+            </span>
+            <span className={`font-mono text-ink-faint text-xs shrink-0 mt-0.5 transition-transform duration-200 ${openIndex === i ? "rotate-45" : ""}`}>
+              +
+            </span>
           </button>
+
           {openIndex === i && (
-            <div className="px-5 py-4 bg-white dark:bg-slate-900/20 border-t border-slate-200 dark:border-slate-800">
-              <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">{faq.answer}</p>
+            <div className="px-2 pb-5 ml-10">
+              <div className="border-t border-rule mb-4" />
+              <p className="text-ink-muted text-sm leading-relaxed">{faq.answer}</p>
               {faq.sourceUrl && (
                 <a
                   href={faq.sourceUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-block text-xs text-indigo-500 dark:text-indigo-400 hover:text-indigo-300 mt-3"
+                  className="inline-block font-mono text-[11px] text-accent hover:text-ink transition-colors mt-3 tracking-wider"
                 >
-                  Source: {faq.sourceLabel}
+                  source: {faq.sourceLabel} ↗
                 </a>
               )}
             </div>

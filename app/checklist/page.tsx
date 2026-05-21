@@ -10,52 +10,46 @@ export const metadata: Metadata = {
 
 export default function ChecklistPage() {
   return (
-    <div className="min-h-screen bg-white dark:bg-slate-950">
+    <div>
       {/* Header */}
-      <div className="border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/40">
+      <div className="border-b border-rule bg-paper-2">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
-          <p className="text-indigo-600 dark:text-indigo-400 text-xs font-medium uppercase tracking-widest mb-3">Checklist</p>
-          <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-slate-100 mb-3">
+          <p className="font-mono text-xs text-ink-faint tracking-widest mb-4 uppercase">checklist</p>
+          <h1 className="font-display text-4xl sm:text-5xl text-ink font-normal mb-4 leading-snug">
             Are You on Track?
           </h1>
-          <p className="text-slate-600 dark:text-slate-400 text-lg max-w-2xl leading-relaxed">
-            Use this checklist to track your mathematical skills and course progress.
-            Your progress saves automatically in this browser.
+          <p className="text-ink-muted text-lg max-w-2xl leading-relaxed">
+            Track your mathematical skills and course progress. Your progress saves
+            automatically in this browser.
           </p>
-          <div className="flex flex-wrap items-center gap-4 mt-5 text-xs text-slate-500">
-            <span className="flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-indigo-500" />
-              Progress auto-saved in browser
-            </span>
-            <span className="flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-violet-500" />
-              No account required
-            </span>
+          <div className="flex flex-wrap items-center gap-4 mt-5 font-mono text-[11px] text-ink-faint tracking-wider">
+            <span>· saves in your browser</span>
+            <span>· no account required</span>
           </div>
         </div>
       </div>
 
-      {/* Checklist */}
+      {/* Checklist workbook */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <ChecklistTracker />
 
         {/* Links */}
-        <div className="mt-12 pt-8 border-t border-slate-200 dark:border-slate-800">
-          <p className="text-slate-500 text-sm mb-4">
+        <div className="mt-12 pt-8 border-t border-rule">
+          <p className="text-ink-muted text-sm mb-5">
             Use the roadmap to understand the timeline behind these skills.
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
             <Link
               href="/roadmap"
-              className="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium text-center transition-colors"
+              className="font-mono text-xs tracking-wider px-5 py-2.5 bg-accent text-paper text-center hover:bg-ink transition-colors"
             >
-              View the roadmap
+              view the roadmap →
             </Link>
             <Link
               href="/resources"
-              className="px-5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-500 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white text-sm font-medium text-center transition-colors"
+              className="font-mono text-xs tracking-wider px-5 py-2.5 border border-rule text-ink-muted text-center hover:border-ink-faint hover:text-ink transition-colors"
             >
-              Find learning resources
+              find learning resources
             </Link>
           </div>
         </div>

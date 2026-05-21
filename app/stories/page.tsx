@@ -11,72 +11,52 @@ export const metadata: Metadata = {
 
 export default function StoriesPage() {
   return (
-    <div className="min-h-screen bg-white dark:bg-slate-950">
+    <div>
       {/* Header */}
-      <div className="border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/40">
+      <div className="border-b border-rule bg-paper-2">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
-          <p className="text-indigo-600 dark:text-indigo-400 text-xs font-medium uppercase tracking-widest mb-3">Stories</p>
-          <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-slate-100 mb-3">
+          <p className="font-mono text-xs text-ink-faint tracking-widest mb-4 uppercase">alumni</p>
+          <h1 className="font-display text-4xl sm:text-5xl text-ink font-normal mb-4 leading-snug">
             Where They Are Now
           </h1>
-          <p className="text-slate-600 dark:text-slate-400 text-lg max-w-2xl leading-relaxed">
-            Real mathematicians, real careers, real advice. Hear from people who started where you are
-            and built exceptional careers with a mathematics degree.
+          <p className="text-ink-muted text-lg max-w-2xl leading-relaxed">
+            Real mathematicians, real careers, real advice. Hear from people who started where
+            you are and built exceptional careers with a mathematics degree.
           </p>
         </div>
       </div>
 
       {/* Stories grid */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-rule">
           {stories.map((story) => (
             <StoryCard key={story.id} story={story} />
           ))}
         </div>
 
-        {/* Phase 2 note */}
-        <div className="mt-12 p-6 rounded-2xl border border-dashed border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/30 text-center">
-          <p className="text-slate-500 text-sm mb-1 font-medium">More stories coming soon</p>
-          <p className="text-slate-400 dark:text-slate-600 text-xs max-w-md mx-auto">
+        <div className="mt-10 border border-dashed border-rule p-6 text-center">
+          <p className="font-display italic text-ink-muted text-base">More stories coming soon</p>
+          <p className="font-mono text-[11px] text-ink-faint mt-2 tracking-wider max-w-md mx-auto">
             We&apos;ll be opening a contributor portal where math alumni can share their own journeys.
-            For now, these profiles represent common paths across career tracks.
           </p>
         </div>
       </div>
 
-      {/* Common themes */}
-      <div className="border-t border-slate-200 dark:border-slate-800 bg-slate-50/80 dark:bg-slate-900/20">
+      {/* Common threads */}
+      <div className="border-t border-rule bg-paper-2">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-6">Common Threads</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <h2 className="font-display text-xl text-ink font-normal mb-8">Common Threads</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-rule">
             {[
-              {
-                symbol: "∂",
-                title: "The proof skills transfer",
-                desc: "Every person above cited proof-writing and rigorous reasoning as directly applicable to their work, even in industry.",
-              },
-              {
-                symbol: "∫",
-                title: "Start coding early",
-                desc: "Nearly every industry mathematician wishes they had started programming earlier. Python first, then specialize by role.",
-              },
-              {
-                symbol: "λ",
-                title: "Internships are decisive",
-                desc: "Practical experience during undergrad dramatically changed what each of them wanted from their career. Intern early.",
-              },
-              {
-                symbol: "∑",
-                title: "The abstract pays off",
-                desc: "Courses that felt purely theoretical — measure theory, abstract algebra — repeatedly showed up as career advantages.",
-              },
+              { symbol: "∂", title: "The proof skills transfer", desc: "Every person above cited proof-writing and rigorous reasoning as directly applicable to their work, even in industry." },
+              { symbol: "∫", title: "Start coding early", desc: "Nearly every industry mathematician wishes they had started programming earlier. Python first, then specialize by role." },
+              { symbol: "λ", title: "Internships are decisive", desc: "Practical experience during undergrad dramatically changed what each of them wanted from their career. Intern early." },
+              { symbol: "∑", title: "The abstract pays off", desc: "Courses that felt purely theoretical — measure theory, abstract algebra — repeatedly showed up as career advantages." },
             ].map((item) => (
-              <div key={item.title} className="p-5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50">
-                <span className="text-2xl math-symbol text-indigo-400/70 dark:text-indigo-400/50 font-light block mb-3">
-                  {item.symbol}
-                </span>
-                <h3 className="text-slate-800 dark:text-slate-300 font-semibold text-sm mb-1.5">{item.title}</h3>
-                <p className="text-slate-500 text-xs leading-relaxed">{item.desc}</p>
+              <div key={item.title} className="bg-paper-2 p-6">
+                <span className="font-mono text-xl text-ink-faint font-light block mb-3">{item.symbol}</span>
+                <h3 className="font-display text-base text-ink font-normal mb-2">{item.title}</h3>
+                <p className="text-ink-muted text-sm leading-relaxed">{item.desc}</p>
               </div>
             ))}
           </div>
@@ -84,18 +64,16 @@ export default function StoriesPage() {
       </div>
 
       {/* CTA */}
-      <div className="border-t border-slate-200 dark:border-slate-800 py-16 text-center px-4">
-        <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-3">
-          Find your own path
+      <div className="border-t border-rule py-16 text-center px-4">
+        <p className="font-mono text-xs text-ink-faint tracking-widest mb-4 uppercase">find your path</p>
+        <h2 className="font-display text-2xl text-ink font-normal mb-6 leading-snug">
+          Which track is right for you?
         </h2>
-        <p className="text-slate-600 dark:text-slate-400 mb-6 max-w-md mx-auto">
-          Take the quiz to discover which career track fits your personality and goals.
-        </p>
         <Link
           href="/quiz"
-          className="inline-flex px-7 py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold transition-colors"
+          className="inline-block font-mono text-xs tracking-wider px-7 py-3 bg-accent text-paper hover:bg-ink transition-colors"
         >
-          Take the Career Quiz
+          take the career quiz →
         </Link>
       </div>
     </div>

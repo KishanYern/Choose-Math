@@ -3,32 +3,52 @@
 /* Enable class-based dark mode for next-themes */
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* Light / dark CSS tokens */
+/* ── Notebook palette ────────────────────────────────────────────────────── */
 :root {
-  --color-surface: #ffffff;
-  --color-surface-2: #f8fafc;
-  --color-surface-3: #f1f5f9;
-  --color-border: #e2e8f0;
-  --color-border-subtle: #f1f5f9;
-  --color-text: #0f172a;
-  --color-text-muted: #64748b;
-  --color-text-faint: #94a3b8;
+  --paper:        #faf6ef;
+  --paper-2:      #f3eee2;
+  --paper-3:      #ece7d8;
+  --rule:         #d6cdb8;
+  --ink:          #1f1d1a;
+  --ink-muted:    #6b665c;
+  --ink-faint:    #a8a08f;
+  --accent:       #1d3557;
+  --accent-soft:  #e7ecf2;
+  --marker:       #c1272d;
+  --highlight:    #f4dc8b;
 }
 
 .dark {
-  --color-surface: #0f172a;
-  --color-surface-2: #1e293b;
-  --color-surface-3: #0f172a;
-  --color-border: #1e293b;
-  --color-border-subtle: #334155;
-  --color-text: #f1f5f9;
-  --color-text-muted: #94a3b8;
-  --color-text-faint: #475569;
+  --paper:        #16181a;
+  --paper-2:      #1d2022;
+  --paper-3:      #262a2c;
+  --rule:         #353a3d;
+  --ink:          #f1ece0;
+  --ink-muted:    #a8a499;
+  --ink-faint:    #6b675e;
+  --accent:       #9bbedd;
+  --accent-soft:  #1a232d;
+  --marker:       #e88a8a;
+  --highlight:    #4a4327;
 }
 
+/* ── Tailwind theme tokens ───────────────────────────────────────────────── */
 @theme inline {
-  --font-sans: var(--font-inter);
-  --font-mono: var(--font-jetbrains-mono);
+  --font-sans:    var(--font-inter);
+  --font-mono:    var(--font-jetbrains-mono);
+  --font-display: var(--font-newsreader);
+
+  --color-paper:       var(--paper);
+  --color-paper-2:     var(--paper-2);
+  --color-paper-3:     var(--paper-3);
+  --color-rule:        var(--rule);
+  --color-ink:         var(--ink);
+  --color-ink-muted:   var(--ink-muted);
+  --color-ink-faint:   var(--ink-faint);
+  --color-accent:      var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-marker:      var(--marker);
+  --color-highlight:   var(--highlight);
 }
 
 * {
@@ -42,63 +62,70 @@ html {
 body {
   min-height: 100vh;
   font-feature-settings: "kern" 1, "liga" 1;
+  background-color: var(--paper);
+  color: var(--ink);
 }
 
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-}
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-::-webkit-scrollbar-thumb {
-  background: #475569;
-  border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #64748b;
+/* ── Dot-grid background ─────────────────────────────────────────────────── */
+.dot-grid {
+  background-image: radial-gradient(circle, var(--rule) 1px, transparent 1px);
+  background-size: 24px 24px;
 }
 
-/* Math symbol decorative text */
+.dot-grid-strong {
+  background-image: radial-gradient(circle, var(--rule) 1.5px, transparent 1.5px);
+  background-size: 20px 20px;
+}
+
+/* ── Ink rule divider ────────────────────────────────────────────────────── */
+.ink-rule {
+  border: none;
+  border-top: 1px solid var(--rule);
+}
+
+/* ── Drop cap for article intros ─────────────────────────────────────────── */
+.drop-cap::first-letter {
+  font-family: var(--font-newsreader), Georgia, serif;
+  font-size: 3.5em;
+  font-weight: 400;
+  line-height: 0.8;
+  float: left;
+  margin-right: 0.08em;
+  margin-top: 0.05em;
+  color: var(--ink);
+}
+
+/* ── Math symbol (mono, light weight) ───────────────────────────────────── */
 .math-symbol {
   font-family: var(--font-jetbrains-mono), monospace;
   font-weight: 300;
 }
 
-/* Gradient text utility */
-.gradient-text {
-  background: linear-gradient(135deg, #818cf8 0%, #a78bfa 50%, #c084fc 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+/* ── Sidenote (margin annotation) ───────────────────────────────────────── */
+.sidenote {
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 0.72rem;
+  color: var(--ink-faint);
+  line-height: 1.5;
 }
 
-.gradient-text-light {
-  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #9333ea 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* Grid background pattern */
-.grid-bg {
-  background-image:
-    linear-gradient(rgba(129, 140, 248, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(129, 140, 248, 0.03) 1px, transparent 1px);
-  background-size: 60px 60px;
-}
-
-/* Card hover effect */
+/* ── Card hover ──────────────────────────────────────────────────────────── */
 .card-hover {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: box-shadow 0.15s ease;
 }
 .card-hover:hover {
-  transform: translateY(-2px);
+  box-shadow: 0 2px 12px 0 rgba(0,0,0,0.06);
 }
 
-/* Focus ring */
+/* ── Focus ring ──────────────────────────────────────────────────────────── */
 :focus-visible {
-  outline: 2px solid #818cf8;
+  outline: 2px solid var(--accent);
   outline-offset: 2px;
-  border-radius: 4px;
+  border-radius: 2px;
 }
+
+/* ── Scrollbar ───────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--ink-faint); }
