@@ -1,11 +1,51 @@
-# ∑ ChooseMath
+# ƒ ChooseMath
 
-> Is Mathematics the right career for you? Explore career paths, top programs, alumni stories, and take a personalized quiz to find your direction.
+> A small field guide to careers in mathematics.
 
-A static informational website for mathematics students — modeled after [WhyPharmacy](https://whypharmacy.org/) but built for math. Dark-mode-first, fast, and fully pre-rendered.
+Explore career paths, top university programs, alumni stories, and take a personalized quiz to find your direction. Built for math students at every stage — high school through graduate school.
 
-**Live site:** _Coming soon (deploy to Vercel)_
+**Live site:** _Coming soon (deploy to Vercel)_  
 **GitHub:** [KishanYern/Choose-Math](https://github.com/KishanYern/Choose-Math)
+
+---
+
+![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-3178c6?logo=typescript&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-38bdf8?logo=tailwind-css&logoColor=white)
+![Static](https://img.shields.io/badge/rendering-static_SSG-22c55e)
+![License](https://img.shields.io/badge/license-MIT-gray)
+
+---
+
+## Screenshots
+
+<!-- Drop a screenshot here once deployed. Example:
+![ChooseMath homepage — light mode](screenshots/home-light.png)
+![ChooseMath homepage — dark mode](screenshots/home-dark.png)
+-->
+
+> _Screenshots coming once deployed. Run `npm run dev` locally to preview._
+
+---
+
+## Design
+
+The site uses a **Mathematician's Notebook** aesthetic — cream paper in light mode, blackboard in dark mode, with editorial serif typography and monospace accents.
+
+| Token | Light | Dark |
+|---|---|---|
+| Background | `#faf6ef` (cream paper) | `#16181a` (blackboard) |
+| Text | `#1f1d1a` (warm near-black) | `#f1ece0` (chalk) |
+| Accent | `#1d3557` (ink blue) | `#9bbedd` (chalk blue) |
+| Marker | `#c1272d` (red pen) | `#e88a8a` (pastel red) |
+| Rule | `#d6cdb8` (faint ink) | `#353a3d` (chalk dust) |
+
+**Fonts:**
+- [Newsreader](https://fonts.google.com/specimen/Newsreader) — display headings, italic pull-quotes
+- [Inter](https://fonts.google.com/specimen/Inter) — body text
+- [JetBrains Mono](https://fonts.google.com/specimen/JetBrains+Mono) — labels, nav links, equations
+
+**Theme toggle:** `lights on / lights off` — persisted via `next-themes`, default dark.
 
 ---
 
@@ -17,7 +57,7 @@ A static informational website for mathematics students — modeled after [WhyPh
 | [TypeScript](https://www.typescriptlang.org) | 5 | Type safety |
 | [Tailwind CSS](https://tailwindcss.com) | v4 | Styling |
 | [next-themes](https://github.com/pacocoursey/next-themes) | 0.4 | Light/dark toggle |
-| [Inter](https://fonts.google.com/specimen/Inter) + [JetBrains Mono](https://fonts.google.com/specimen/JetBrains+Mono) | — | Typography |
+| [Newsreader](https://fonts.google.com/specimen/Newsreader) + [Inter](https://fonts.google.com/specimen/Inter) + [JetBrains Mono](https://fonts.google.com/specimen/JetBrains+Mono) | — | Typography |
 
 All 18 pages are pre-rendered as static HTML at build time — no server required.
 
@@ -27,24 +67,25 @@ All 18 pages are pre-rendered as static HTML at build time — no server require
 
 | Route | Description |
 |---|---|
-| `/` | Landing — hero, stats bar, persona router, featured careers, alumni snippets, FAQ |
+| `/` | Landing — hero, stats bar, featured careers, alumni snippets, FAQ |
 | `/quiz` | 8-question career quiz → Pure Math / Applied Math / Data Science / Actuarial |
-| `/careers` | Grid of all 7 career paths with salary ranges |
-| `/careers/[slug]` | Career detail — day-in-the-life, required skills, employers, salary |
-| `/roadmap` | 6-step path from high school to career with action items and pro tips |
+| `/careers` | Directory of all 8 career paths with salary ranges |
+| `/careers/[slug]` | Career detail — day-in-the-life, required skills, employers, salary, growth outlook |
+| `/roadmap` | Step-by-step path from high school to career with action items |
 | `/programs` | Notable national math programs, filterable by Pure / Applied / Statistics |
-| `/stories` | 6 static alumni profiles with quotes and career trajectories |
-| `/resources` | 20+ resources — textbooks, courses, competitions, tools, communities |
-| `/checklist` | Skills checklist with `localStorage` persistence and per-category progress bars |
+| `/stories` | 7 alumni profiles with pull-quotes and career trajectories |
+| `/resources` | 25+ curated resources — textbooks, courses, competitions, tools, communities |
+| `/checklist` | Skills checklist with `localStorage` persistence and per-category progress |
 
 ---
 
 ## Project Structure
 
 ```
-app/                    ← Next.js App Router pages
-  layout.tsx            ← Root layout: Nav, Footer, ThemeProvider
-  page.tsx              ← Landing page
+app/                       ← Next.js App Router pages
+  globals.css              ← Notebook palette tokens, dot-grid, typography utilities
+  layout.tsx               ← Root layout: Nav, Footer, ThemeProvider, fonts
+  page.tsx                 ← Landing page
   quiz/page.tsx
   careers/page.tsx
   careers/[slug]/page.tsx
@@ -54,26 +95,28 @@ app/                    ← Next.js App Router pages
   resources/page.tsx
   checklist/page.tsx
 
-components/             ← Shared UI components
-  Nav.tsx               ← Sticky nav + dark/light toggle
-  Footer.tsx
-  ThemeProvider.tsx     ← next-themes wrapper (client)
-  ThemeToggle.tsx       ← Sun/moon toggle button (client)
-  CareerCard.tsx
-  StoryCard.tsx
-  FAQAccordion.tsx      ← Client component
-  QuizEngine.tsx        ← Quiz state machine (client)
-  ProgramsFilter.tsx    ← Focus-area filter (client)
-  ChecklistTracker.tsx  ← localStorage checklist (client)
+components/                ← Shared UI components
+  Nav.tsx                  ← Sticky nav with lowercase mono links + hamburger
+  Footer.tsx               ← Signature footer with math symbol flourish
+  ThemeProvider.tsx        ← next-themes wrapper (client)
+  ThemeToggle.tsx          ← "lights on / lights off" text toggle (client)
+  Ink.tsx                  ← Hand-drawn inline SVG primitives (InkUnderline,
+                              InkCircle, InkArrow, InkCheck, InkRule)
+  CareerCard.tsx           ← Paper-2 card with hover ink underline
+  StoryCard.tsx            ← Pull-quote treatment with byline
+  FAQAccordion.tsx         ← Q.01 style accordion (client)
+  QuizEngine.tsx           ← Workbook-style quiz state machine (client)
+  ProgramsFilter.tsx       ← Expandable directory rows with filter (client)
+  ChecklistTracker.tsx     ← localStorage checklist with InkCheck boxes (client)
 
-data/                   ← All static content as typed TypeScript arrays
-  careers.ts            ← CareerTrack[] — 7 career paths
-  programs.ts           ← Program[] — notable math programs
-  quiz.ts               ← QuizQuestion[] + scoring logic
-  stories.ts            ← Story[] — 6 alumni profiles
-  resources.ts          ← Resource[] — 20+ curated resources
-  roadmap.ts            ← RoadmapStep[] — 6-step roadmap
-  checklist.ts          ← ChecklistCategory[] — 7 skill categories
+data/                      ← All static content as typed TypeScript arrays
+  careers.ts               ← CareerTrack[] — 8 career paths
+  programs.ts              ← Program[] — notable math departments
+  quiz.ts                  ← QuizQuestion[] + scoring logic
+  stories.ts               ← Story[] — 7 alumni profiles
+  resources.ts             ← Resource[] — 25+ curated resources
+  roadmap.ts               ← RoadmapStep[] — step-by-step career roadmap
+  checklist.ts             ← ChecklistCategory[] — skill milestone categories
 ```
 
 ---
@@ -97,16 +140,6 @@ npx tsc --noEmit
 # Production build
 npm run build
 ```
-
----
-
-## Design System
-
-- **Dark mode (default):** `#0f172a` slate base, indigo/violet accent (`#818cf8`)
-- **Light mode:** white/slate-50 base, indigo accent (`#6366f1`)
-- **Toggle:** persisted via `next-themes` with `defaultTheme="dark"`
-- **Fonts:** Inter (UI) + JetBrains Mono (math symbols, code)
-- **Math symbols** (∑ ∫ ∂ ∇ λ ∞) used as decorative elements throughout
 
 ---
 
