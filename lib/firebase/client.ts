@@ -1,6 +1,6 @@
-import { initializeApp, getApps } from "firebase/app";
-import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import { initializeApp, getApps, type FirebaseApp } from "firebase/app";
+import { getAuth, type Auth } from "firebase/auth";
+import { getFirestore, type Firestore } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -11,7 +11,14 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
+// Guard against SSR / build environments where env vars aren't present.
+// Firebase is only used in client components; these singletons are always
+// accessed after hydration, so the null! casts are safe.
+const hasConfig = !!process.env.NEXT_PUBLIC_FIREBASE_API_KEY;
 
-export const auth = getAuth(app);
-export const db = getFirestore(app);
+const app: FirebaseApp = hasConfig
+  ? (getApps().length ? getApps()[0] : initializeApp(firebaseConfig))
+  : (null as unknown as FirebaseApp);
+
+export const auth: Auth = hasConfig ? getAuth(app) : (null as unknown as Auth);
+export const db: Firestore = hasConfig ? getFirestore(app) : (null as unknown as Firestore);
