@@ -1,4 +1,4 @@
-import type { Story } from "@/data/stories";
+import type { Story } from "@/lib/firebase/stories";
 import { InkCircle, InkPaperclip } from "@/components/Ink";
 
 const tapeVariants = ["washi-tape", "washi-tape-blue", "washi-tape-yellow"] as const;

@@ -1,0 +1,19 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    match /stories/{id} {
+      allow read: if resource.data.status == "approved";
+      allow create: if request.auth != null
+                    && request.resource.data.status == "pending"
+                    && request.resource.data.submittedBy == request.auth.uid;
+      allow update, delete: if false;
+    }
+
+    match /users/{uid}/quizResults/{id} {
+      allow read, create: if request.auth != null && request.auth.uid == uid;
+      allow update, delete: if false;
+    }
+
+  }
+}

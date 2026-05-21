@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, JetBrains_Mono, Newsreader } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { AuthProvider } from "@/components/AuthProvider";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 
@@ -63,9 +64,11 @@ export default function RootLayout({
     >
       <body className="bg-paper text-ink flex flex-col min-h-screen antialiased dot-grid">
         <ThemeProvider>
-          <Nav />
-          <main className="flex-1">{children}</main>
-          <Footer />
+          <AuthProvider>
+            <Nav />
+            <main className="flex-1">{children}</main>
+            <Footer />
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>

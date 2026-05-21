@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { ThemeToggle } from "./ThemeToggle";
+import { useAuth } from "./AuthProvider";
 
 const navLinks = [
   { href: "/quiz", label: "quiz" },
@@ -18,6 +19,7 @@ const navLinks = [
 export function Nav() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { user, signIn, signOut, loading } = useAuth();
 
   return (
     <header className="sticky top-0 z-50 bg-paper border-b border-rule">
@@ -57,8 +59,33 @@ export function Nav() {
           })}
         </div>
 
-        {/* Right: Theme toggle + hamburger */}
+        {/* Right: auth + theme + hamburger */}
         <div className="flex items-center gap-3">
+          {!loading && (
+            user ? (
+              <div className="hidden md:flex items-center gap-3">
+                <Link
+                  href="/profile"
+                  className="font-mono text-[11px] text-ink-faint hover:text-ink tracking-wider transition-colors"
+                >
+                  {user.displayName?.split(" ")[0] ?? "profile"}
+                </Link>
+                <button
+                  onClick={signOut}
+                  className="font-mono text-[11px] text-ink-faint hover:text-ink tracking-wider transition-colors"
+                >
+                  sign out
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={signIn}
+                className="hidden md:block font-mono text-[11px] text-ink-faint hover:text-ink tracking-wider transition-colors"
+              >
+                sign in
+              </button>
+            )
+          )}
           <ThemeToggle />
 
           {/* Mobile hamburger */}

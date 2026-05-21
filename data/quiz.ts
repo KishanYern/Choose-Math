@@ -1,4 +1,5 @@
 export type ResultType = "pure-math" | "applied-math" | "data-science" | "actuarial";
+export type ExperienceLevel = "beginner" | "intermediate" | "advanced";
 
 export interface QuizOption {
   id: string;
@@ -22,7 +23,407 @@ export interface QuizResult {
   courses: string[];
 }
 
-export const questions: QuizQuestion[] = [
+export interface ExperienceOption {
+  id: ExperienceLevel;
+  text: string;
+  sub: string;
+}
+
+export const experienceOptions: ExperienceOption[] = [
+  {
+    id: "beginner",
+    text: "High school math is my most recent",
+    sub: "Algebra, Geometry, Pre-Calculus — haven't started college math yet",
+  },
+  {
+    id: "intermediate",
+    text: "I've taken Calculus or Statistics",
+    sub: "Introductory college-level courses",
+  },
+  {
+    id: "advanced",
+    text: "I've taken Linear Algebra, Calc III, or beyond",
+    sub: "Mid-to-upper level college math",
+  },
+];
+
+// ── Beginner track — personality & interest, no jargon ───────────────────────
+
+const beginnerQuestions: QuizQuestion[] = [
+  {
+    id: 1,
+    question: "When you solve a puzzle, which part is most satisfying?",
+    options: [
+      {
+        id: "1a",
+        text: "Finding the hidden rule that makes everything click",
+        scores: { "pure-math": 3 },
+      },
+      {
+        id: "1b",
+        text: "Using it to explain something in the real world",
+        scores: { "applied-math": 3 },
+      },
+      {
+        id: "1c",
+        text: "Spotting a pattern across lots of examples",
+        scores: { "data-science": 3 },
+      },
+      {
+        id: "1d",
+        text: "Getting to a precise, reliable answer",
+        scores: { actuarial: 3 },
+      },
+    ],
+  },
+  {
+    id: 2,
+    question: "Which class sounds most exciting to you?",
+    options: [
+      {
+        id: "2a",
+        text: "A logic and puzzles course — proving why things must be true",
+        scores: { "pure-math": 3 },
+      },
+      {
+        id: "2b",
+        text: "Physics or engineering — math meets the real world",
+        scores: { "applied-math": 3 },
+      },
+      {
+        id: "2c",
+        text: "Data analysis — uncovering what numbers actually tell us",
+        scores: { "data-science": 3 },
+      },
+      {
+        id: "2d",
+        text: "Finance or economics — understanding money and risk",
+        scores: { actuarial: 3 },
+      },
+    ],
+  },
+  {
+    id: 3,
+    question: "How do you feel about working with computers?",
+    options: [
+      {
+        id: "3a",
+        text: "I'd rather work on paper — computers feel secondary to me",
+        scores: { "pure-math": 2, actuarial: 1 },
+      },
+      {
+        id: "3b",
+        text: "I like writing code when it helps me model or simulate something",
+        scores: { "applied-math": 2, actuarial: 1 },
+      },
+      {
+        id: "3c",
+        text: "I love coding — I spend a lot of time in Python or similar tools",
+        scores: { "data-science": 3, "applied-math": 1 },
+      },
+      {
+        id: "3d",
+        text: "I'm comfortable with spreadsheets and data tools",
+        scores: { actuarial: 3 },
+      },
+    ],
+  },
+  {
+    id: 4,
+    question: "Which workplace sounds most appealing?",
+    options: [
+      {
+        id: "4a",
+        text: "A university or research institute where ideas flow freely",
+        scores: { "pure-math": 3 },
+      },
+      {
+        id: "4b",
+        text: "A lab, engineering firm, or government agency solving hard technical problems",
+        scores: { "applied-math": 3 },
+      },
+      {
+        id: "4c",
+        text: "A tech company building data-driven products millions of people use",
+        scores: { "data-science": 3 },
+      },
+      {
+        id: "4d",
+        text: "A financial or insurance firm with a clear, structured career path",
+        scores: { actuarial: 3 },
+      },
+    ],
+  },
+  {
+    id: 5,
+    question: "What kind of impact matters most to you?",
+    options: [
+      {
+        id: "5a",
+        text: "Advancing knowledge — even if it takes decades to matter in the real world",
+        scores: { "pure-math": 3 },
+      },
+      {
+        id: "5b",
+        text: "Solving concrete technical challenges in science or engineering",
+        scores: { "applied-math": 3 },
+      },
+      {
+        id: "5c",
+        text: "Helping companies make smarter decisions through data",
+        scores: { "data-science": 3 },
+      },
+      {
+        id: "5d",
+        text: "Protecting people and organizations by understanding risk",
+        scores: { actuarial: 3 },
+      },
+    ],
+  },
+  {
+    id: 6,
+    question: "When you're done solving something, what feels most rewarding?",
+    options: [
+      {
+        id: "6a",
+        text: "The solution is beautifully logical and will hold true forever",
+        scores: { "pure-math": 3 },
+      },
+      {
+        id: "6b",
+        text: "The model actually works when tested against reality",
+        scores: { "applied-math": 3 },
+      },
+      {
+        id: "6c",
+        text: "My prediction matched what the data showed",
+        scores: { "data-science": 3 },
+      },
+      {
+        id: "6d",
+        text: "I got a precise number that helped make a real decision",
+        scores: { actuarial: 3 },
+      },
+    ],
+  },
+  {
+    id: 7,
+    question: "Which future path sounds most like you?",
+    options: [
+      {
+        id: "7a",
+        text: "Graduate school → researcher, professor, or theorist",
+        scores: { "pure-math": 3 },
+      },
+      {
+        id: "7b",
+        text: "Graduate school → scientist, engineer, or technical analyst",
+        scores: { "applied-math": 3, "pure-math": 1 },
+      },
+      {
+        id: "7c",
+        text: "Tech job → lead data scientist or AI specialist",
+        scores: { "data-science": 3, "applied-math": 1 },
+      },
+      {
+        id: "7d",
+        text: "Entry analyst → certified actuary with a structured exam path",
+        scores: { actuarial: 3 },
+      },
+    ],
+  },
+];
+
+// ── Intermediate track — moderate technical framing ───────────────────────────
+
+const intermediateQuestions: QuizQuestion[] = [
+  {
+    id: 1,
+    question: "What aspect of math excites you most?",
+    options: [
+      {
+        id: "1a",
+        text: "The elegance of abstract reasoning — proving why things must be true",
+        scores: { "pure-math": 3 },
+      },
+      {
+        id: "1b",
+        text: "Using equations and models to describe the physical world",
+        scores: { "applied-math": 3 },
+      },
+      {
+        id: "1c",
+        text: "Analyzing data to find patterns and make predictions",
+        scores: { "data-science": 3 },
+      },
+      {
+        id: "1d",
+        text: "Using probability to measure and manage uncertainty",
+        scores: { actuarial: 3 },
+      },
+    ],
+  },
+  {
+    id: 2,
+    question: "How do you feel about programming?",
+    options: [
+      {
+        id: "2a",
+        text: "I prefer working with math on paper — coding is a secondary tool",
+        scores: { "pure-math": 2, actuarial: 1 },
+      },
+      {
+        id: "2b",
+        text: "I enjoy coding when it helps me model or simulate something",
+        scores: { "applied-math": 2, actuarial: 1 },
+      },
+      {
+        id: "2c",
+        text: "Code is one of my main tools — I enjoy Python, R, or similar",
+        scores: { "data-science": 3, "applied-math": 1 },
+      },
+      {
+        id: "2d",
+        text: "I use Excel or R for calculations and practical reporting",
+        scores: { actuarial: 3 },
+      },
+    ],
+  },
+  {
+    id: 3,
+    question: "Which environment sounds most appealing?",
+    options: [
+      {
+        id: "3a",
+        text: "A university research setting with intellectual freedom",
+        scores: { "pure-math": 3 },
+      },
+      {
+        id: "3b",
+        text: "A science, engineering, or government lab solving technical challenges",
+        scores: { "applied-math": 3 },
+      },
+      {
+        id: "3c",
+        text: "A fast-paced tech company building data-driven products",
+        scores: { "data-science": 3 },
+      },
+      {
+        id: "3d",
+        text: "A financial services or insurance firm with structured career growth",
+        scores: { actuarial: 3 },
+      },
+    ],
+  },
+  {
+    id: 4,
+    question: "When you solve a problem, what satisfies you most?",
+    options: [
+      {
+        id: "4a",
+        text: "A rigorous, general solution that settles the question permanently",
+        scores: { "pure-math": 3 },
+      },
+      {
+        id: "4b",
+        text: "A model that holds up in practice and scales to new cases",
+        scores: { "applied-math": 3 },
+      },
+      {
+        id: "4c",
+        text: "Seeing your statistical prediction confirmed by real data",
+        scores: { "data-science": 3 },
+      },
+      {
+        id: "4d",
+        text: "A precise numerical answer that drives a real business decision",
+        scores: { actuarial: 3 },
+      },
+    ],
+  },
+  {
+    id: 5,
+    question: "Which area of math are you most drawn to?",
+    options: [
+      {
+        id: "5a",
+        text: "Pure reasoning: sequences, proofs, structures, and infinity",
+        scores: { "pure-math": 3 },
+      },
+      {
+        id: "5b",
+        text: "Calculus-based modeling: differential equations, optimization, simulation",
+        scores: { "applied-math": 3 },
+      },
+      {
+        id: "5c",
+        text: "Statistics and data: regression, distributions, and inference",
+        scores: { "data-science": 3 },
+      },
+      {
+        id: "5d",
+        text: "Probability and finance: risk, expected values, and insurance math",
+        scores: { actuarial: 3 },
+      },
+    ],
+  },
+  {
+    id: 6,
+    question: "What kind of long-term impact do you want?",
+    options: [
+      {
+        id: "6a",
+        text: "Advance knowledge — even if real applications come decades later",
+        scores: { "pure-math": 3 },
+      },
+      {
+        id: "6b",
+        text: "Engineer solutions to pressing scientific or industrial problems",
+        scores: { "applied-math": 3 },
+      },
+      {
+        id: "6c",
+        text: "Drive smarter decisions through statistical and ML-powered insights",
+        scores: { "data-science": 3 },
+      },
+      {
+        id: "6d",
+        text: "Protect people and institutions by quantifying financial risk",
+        scores: { actuarial: 3 },
+      },
+    ],
+  },
+  {
+    id: 7,
+    question: "Which path sounds most like you?",
+    options: [
+      {
+        id: "7a",
+        text: "PhD or research MS → researcher, professor, or theorist",
+        scores: { "pure-math": 3 },
+      },
+      {
+        id: "7b",
+        text: "MS in Applied Math or Engineering → technical role in industry or research",
+        scores: { "applied-math": 3, "pure-math": 1 },
+      },
+      {
+        id: "7c",
+        text: "BS/MS in Statistics or CS → data scientist or ML engineer at a tech company",
+        scores: { "data-science": 3, "applied-math": 1 },
+      },
+      {
+        id: "7d",
+        text: "BS in Math → pass actuarial exams → Fellow of the Society of Actuaries",
+        scores: { actuarial: 3 },
+      },
+    ],
+  },
+];
+
+// ── Advanced track — full technical depth ────────────────────────────────────
+
+const advancedQuestions: QuizQuestion[] = [
   {
     id: 1,
     question: "What aspect of mathematics excites you most?",
@@ -138,7 +539,7 @@ export const questions: QuizQuestion[] = [
       },
       {
         id: "5b",
-        text: "Differential Equations, Fluid Dynamics, or Numerical Analysis",
+        text: "Differential Equations, Numerical Analysis, or Optimization",
         scores: { "applied-math": 3 },
       },
       {
@@ -148,7 +549,7 @@ export const questions: QuizQuestion[] = [
       },
       {
         id: "5d",
-        text: "Probability Theory and Financial/Insurance Mathematics",
+        text: "Probability Theory and Financial or Insurance Mathematics",
         scores: { actuarial: 3 },
       },
     ],
@@ -205,33 +606,13 @@ export const questions: QuizQuestion[] = [
       },
     ],
   },
-  {
-    id: 8,
-    question: "What does your ideal career trajectory look like?",
-    options: [
-      {
-        id: "8a",
-        text: "PhD → postdoc → tenure-track faculty or research institute",
-        scores: { "pure-math": 3 },
-      },
-      {
-        id: "8b",
-        text: "Graduate degree → scientist, engineer, or quantitative researcher",
-        scores: { "applied-math": 3, "pure-math": 1 },
-      },
-      {
-        id: "8c",
-        text: "BS/MS → data scientist or ML engineer at a top tech company",
-        scores: { "data-science": 3, "applied-math": 1 },
-      },
-      {
-        id: "8d",
-        text: "Entry-level analyst → Fellow of the Society of Actuaries",
-        scores: { actuarial: 3 },
-      },
-    ],
-  },
 ];
+
+export const questionsByLevel: Record<ExperienceLevel, QuizQuestion[]> = {
+  beginner: beginnerQuestions,
+  intermediate: intermediateQuestions,
+  advanced: advancedQuestions,
+};
 
 export const results: Record<ResultType, QuizResult> = {
   "pure-math": {
@@ -314,7 +695,10 @@ export const results: Record<ResultType, QuizResult> = {
   },
 };
 
-export function scoreQuiz(answers: Record<number, string>): QuizResult {
+export function scoreQuiz(
+  answers: Record<number, string>,
+  level: ExperienceLevel
+): QuizResult {
   const totals: Record<ResultType, number> = {
     "pure-math": 0,
     "applied-math": 0,
@@ -322,6 +706,7 @@ export function scoreQuiz(answers: Record<number, string>): QuizResult {
     actuarial: 0,
   };
 
+  const questions = questionsByLevel[level];
   for (const [questionId, optionId] of Object.entries(answers)) {
     const question = questions.find((q) => q.id === Number(questionId));
     if (!question) continue;

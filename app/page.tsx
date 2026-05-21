@@ -4,6 +4,7 @@ import { stories } from "@/data/stories";
 import { CareerCard } from "@/components/CareerCard";
 import { StoryCard } from "@/components/StoryCard";
 import { FAQAccordion } from "@/components/FAQAccordion";
+import { QuizEngine } from "@/components/QuizEngine";
 import {
   InkUnderline,
   InkRule,
@@ -94,12 +95,12 @@ export default function HomePage() {
               </div>
 
               <div className="flex flex-col sm:flex-row items-start gap-3">
-                <Link
-                  href="/quiz"
+                <a
+                  href="#quiz"
                   className="font-mono text-xs tracking-wider px-7 py-3 bg-accent text-paper hover:bg-ink transition-colors"
                 >
                   start the quiz →
-                </Link>
+                </a>
                 <Link
                   href="/careers"
                   className="font-mono text-xs tracking-wider px-7 py-3 border border-rule text-ink-muted hover:border-ink-faint hover:text-ink transition-colors"
@@ -258,32 +259,21 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── Quiz CTA ──────────────────────────────────────────────────────── */}
-      <section className="border-b border-rule bg-paper-2 paper-grain">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 py-20 text-center">
-          <p className="font-mono text-xs text-ink-faint tracking-widest mb-6 uppercase">No. 04 — find your path</p>
-          <h2 className="font-display text-3xl sm:text-4xl text-ink font-normal mb-4 leading-snug">
-            Not sure which path is{" "}
-            <span className="marker-highlight">right</span>?
-          </h2>
-          <p className="text-ink-muted leading-relaxed mb-8 max-w-lg mx-auto">
-            Answer 8 honest questions about your interests, working style, and goals. We&apos;ll
-            identify whether you&apos;re a Pure Mathematician, Applied Mathematician, Data Scientist,
-            or Actuary at heart.
-          </p>
-          <div className="relative inline-block">
-            <Link
-              href="/quiz"
-              className="inline-block font-mono text-xs tracking-wider px-8 py-3.5 bg-accent text-paper hover:bg-ink transition-colors"
-            >
-              take the career quiz →
-            </Link>
-            {/* Doodle arrow pointing at the button */}
-            <span className="absolute -right-12 -top-2 text-marker opacity-50 pointer-events-none hidden sm:block">
-              <InkArrowHand className="w-10 h-8" rotate={20} />
-            </span>
+      {/* ── Quiz ─────────────────────────────────────────────────────────── */}
+      <section className="border-b border-rule bg-paper-2 paper-grain" id="quiz">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-20">
+          <div className="mb-12">
+            <p className="font-mono text-xs text-ink-faint tracking-widest mb-4 uppercase">No. 04 — find your path</p>
+            <h2 className="font-display text-3xl sm:text-4xl text-ink font-normal mb-3 leading-snug">
+              Not sure which path is{" "}
+              <span className="marker-highlight">right</span>?
+            </h2>
+            <p className="text-ink-muted leading-relaxed max-w-lg">
+              Answer a few honest questions and we&apos;ll identify whether you&apos;re a Pure Mathematician,
+              Applied Mathematician, Data Scientist, or Actuary at heart.
+            </p>
           </div>
-          <p className="font-mono text-[11px] text-ink-faint tracking-wider mt-4">8 questions · ~2 minutes · no account needed</p>
+          <QuizEngine />
         </div>
       </section>
 
@@ -337,12 +327,12 @@ export default function HomePage() {
           Start your mathematics journey.
         </h2>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-10">
-          <Link
-            href="/quiz"
+          <a
+            href="#quiz"
             className="font-mono text-xs tracking-wider px-7 py-3 bg-accent text-paper hover:bg-ink transition-colors"
           >
             take the quiz →
-          </Link>
+          </a>
           <Link
             href="/programs"
             className="font-mono text-xs tracking-wider px-7 py-3 border border-rule text-ink-muted hover:border-ink-faint hover:text-ink transition-colors"

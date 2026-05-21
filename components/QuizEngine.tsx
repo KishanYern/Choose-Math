@@ -2,30 +2,47 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { questions, scoreQuiz, type QuizResult } from "@/data/quiz";
+import {
+  experienceOptions,
+  questionsByLevel,
+  scoreQuiz,
+  type ExperienceLevel,
+  type QuizResult,
+} from "@/data/quiz";
 import { InkCheck } from "./Ink";
+import { saveQuizResult } from "@/lib/firebase/quiz";
 
 export function QuizEngine() {
+  const [level, setLevel] = useState<ExperienceLevel | null>(null);
   const [currentQ, setCurrentQ] = useState(0);
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const [selected, setSelected] = useState<string | null>(null);
   const [result, setResult] = useState<QuizResult | null>(null);
 
-  const question = questions[currentQ];
-  const progress = (currentQ / questions.length) * 100;
-  const isLast = currentQ === questions.length - 1;
+  function handleSelectLevel(chosen: ExperienceLevel) {
+    setLevel(chosen);
+    setCurrentQ(0);
+    setAnswers({});
+    setSelected(null);
+    setResult(null);
+  }
 
   function handleSelect(optionId: string) {
     setSelected(optionId);
   }
 
   function handleNext() {
-    if (!selected) return;
+    if (!selected || !level) return;
+    const questions = questionsByLevel[level];
+    const question = questions[currentQ];
     const newAnswers = { ...answers, [question.id]: selected };
     setAnswers(newAnswers);
 
+    const isLast = currentQ === questions.length - 1;
     if (isLast) {
-      setResult(scoreQuiz(newAnswers));
+      const scored = scoreQuiz(newAnswers, level);
+      setResult(scored);
+      saveQuizResult({ level, resultType: scored.type, resultTitle: scored.title });
     } else {
       setCurrentQ((q) => q + 1);
       setSelected(null);
@@ -33,12 +50,20 @@ export function QuizEngine() {
   }
 
   function handleBack() {
-    if (currentQ === 0) return;
-    setCurrentQ((q) => q - 1);
-    setSelected(answers[questions[currentQ - 1].id] ?? null);
+    if (!level) return;
+    if (currentQ === 0) {
+      // Return to experience gate
+      setLevel(null);
+      setSelected(null);
+    } else {
+      const questions = questionsByLevel[level];
+      setCurrentQ((q) => q - 1);
+      setSelected(answers[questions[currentQ - 1].id] ?? null);
+    }
   }
 
   function handleRestart() {
+    setLevel(null);
     setCurrentQ(0);
     setAnswers({});
     setSelected(null);
@@ -49,8 +74,48 @@ export function QuizEngine() {
     return <QuizResultView result={result} onRestart={handleRestart} />;
   }
 
+  // Experience gate
+  if (!level) {
+    return (
+      <div>
+        <div className="mb-8">
+          <p className="font-mono text-xs text-ink-faint tracking-wider mb-1">before we begin</p>
+          <h2 className="font-display text-2xl sm:text-3xl text-ink font-normal leading-snug">
+            How much math have you studied?
+          </h2>
+          <p className="sidenote mt-2">this helps us tailor the questions to you</p>
+        </div>
+
+        <div className="space-y-2 mb-10">
+          {experienceOptions.map((opt) => (
+            <button
+              key={opt.id}
+              onClick={() => handleSelectLevel(opt.id)}
+              className="w-full text-left px-5 py-4 border border-rule bg-paper-2 text-ink-muted hover:border-ink-faint hover:bg-paper-3 transition-colors duration-150 flex items-start gap-4"
+            >
+              <span className="mt-0.5 w-4 h-4 shrink-0 border border-rule rounded-full" />
+              <span>
+                <span className="block text-sm sm:text-base leading-relaxed text-ink">
+                  {opt.text}
+                </span>
+                <span className="block font-mono text-[11px] text-ink-faint mt-0.5 tracking-wide">
+                  {opt.sub}
+                </span>
+              </span>
+            </button>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  const questions = questionsByLevel[level];
+  const question = questions[currentQ];
+  const progress = (currentQ / questions.length) * 100;
+  const isLast = currentQ === questions.length - 1;
+
   return (
-    <div className="max-w-2xl mx-auto">
+    <div>
       {/* Progress */}
       <div className="mb-10">
         <div className="flex justify-between items-baseline mb-3">
@@ -59,7 +124,6 @@ export function QuizEngine() {
           </span>
           <span className="font-mono text-xs text-ink-faint">{Math.round(progress)}%</span>
         </div>
-        {/* Thin progress underline */}
         <div className="h-px bg-rule overflow-hidden">
           <div
             className="h-full bg-accent transition-all duration-300"
@@ -92,7 +156,6 @@ export function QuizEngine() {
                   : "border-rule bg-paper-2 text-ink-muted hover:border-ink-faint hover:bg-paper-3"
               }`}
             >
-              {/* Circle indicator */}
               <span
                 className={`mt-0.5 w-4 h-4 shrink-0 border rounded-full flex items-center justify-center transition-colors ${
                   isChosen ? "border-accent bg-accent" : "border-rule"
@@ -114,8 +177,7 @@ export function QuizEngine() {
       <div className="flex items-center justify-between border-t border-rule pt-5">
         <button
           onClick={handleBack}
-          disabled={currentQ === 0}
-          className="font-mono text-xs text-ink-faint hover:text-ink disabled:opacity-30 disabled:cursor-not-allowed transition-colors tracking-wider"
+          className="font-mono text-xs text-ink-faint hover:text-ink transition-colors tracking-wider"
         >
           ← back
         </button>
@@ -140,7 +202,7 @@ function QuizResultView({ result, onRestart }: { result: QuizResult; onRestart: 
   };
 
   return (
-    <div className="max-w-2xl mx-auto">
+    <div>
       {/* Result header */}
       <div className="mb-10">
         <p className="font-mono text-xs text-ink-faint tracking-wider mb-3">your result</p>

@@ -1,15 +1,25 @@
-import type { Metadata } from "next";
-import Link from "next/link";
-import { stories } from "@/data/stories";
-import { StoryCard } from "@/components/StoryCard";
+"use client";
 
-export const metadata: Metadata = {
-  title: "Alumni Stories — Mathematics Careers",
-  description:
-    "Hear from mathematicians working at top hedge funds, AI labs, insurance firms, and universities about how their math degree launched their career.",
-};
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { listApprovedStories, type Story } from "@/lib/firebase/stories";
+import { StoryCard } from "@/components/StoryCard";
+import { SubmitStoryDialog } from "@/components/SubmitStoryDialog";
 
 export default function StoriesPage() {
+  const [stories, setStories] = useState<Story[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  function reload() {
+    listApprovedStories()
+      .then(setStories)
+      .finally(() => setLoading(false));
+  }
+
+  useEffect(() => {
+    reload();
+  }, []);
+
   return (
     <div>
       {/* Header */}
@@ -28,17 +38,25 @@ export default function StoriesPage() {
 
       {/* Stories grid */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 items-start">
-          {stories.map((story, i) => (
-            <StoryCard key={story.id} story={story} index={i} />
-          ))}
-        </div>
+        {loading ? (
+          <div className="text-center py-16">
+            <span className="font-mono text-xs text-ink-faint tracking-wider animate-pulse">loading stories…</span>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 items-start">
+            {stories.map((story, i) => (
+              <StoryCard key={story.id} story={story} index={i} />
+            ))}
+          </div>
+        )}
 
-        <div className="mt-10 border border-dashed border-rule p-6 text-center">
-          <p className="font-display italic text-ink-muted text-base">More stories coming soon</p>
-          <p className="font-mono text-[11px] text-ink-faint mt-2 tracking-wider max-w-md mx-auto">
-            We&apos;ll be opening a contributor portal where math alumni can share their own journeys.
+        {/* Contribute CTA */}
+        <div className="mt-12 border border-dashed border-rule p-8 text-center space-y-4">
+          <p className="font-mono text-xs text-ink-faint tracking-widest uppercase">add your story</p>
+          <p className="font-display italic text-ink-muted text-base max-w-md mx-auto">
+            Are you a mathematician who graduated with a math degree? Share your journey with the next generation.
           </p>
+          <SubmitStoryDialog onSuccess={reload} />
         </div>
       </div>
 
