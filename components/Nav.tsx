@@ -22,17 +22,24 @@ export function Nav() {
   const { user, signIn, signOut, loading } = useAuth();
 
   return (
-    <header className="sticky top-0 z-50 bg-paper border-b border-rule">
-      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
+    <header className="sticky top-0 z-50 border-b border-rule/60 backdrop-blur-xl bg-paper/70 supports-[backdrop-filter]:bg-paper/55">
+      {/* Gradient hairline under nav */}
+      <span aria-hidden className="pointer-events-none absolute inset-x-0 -bottom-px h-px aurora-bg opacity-70" />
+      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* Logo */}
         <Link
           href="/"
-          className="flex items-center gap-1.5 group"
+          className="flex items-center gap-2 group"
           onClick={() => setMobileOpen(false)}
         >
-          <span className="font-mono text-marker text-base font-light select-none">ƒ</span>
-          <span className="font-display italic text-ink text-base font-normal tracking-tight group-hover:text-accent transition-colors">
-            ChooseMath
+          <span
+            aria-hidden
+            className="relative inline-flex h-8 w-8 items-center justify-center rounded-xl aurora-bg shadow-[0_6px_18px_-6px_var(--aurora-1)]"
+          >
+            <span className="font-display italic text-white text-lg leading-none select-none">ƒ</span>
+          </span>
+          <span className="font-display text-ink text-lg font-medium tracking-tight">
+            Choose<span className="aurora-text italic">Math</span>
           </span>
         </Link>
 
@@ -52,7 +59,7 @@ export function Nav() {
               >
                 {link.label}
                 {active && (
-                  <span className="absolute bottom-0 left-0 right-0 block h-px bg-accent" />
+                  <span className="absolute -bottom-1 left-0 right-0 block h-0.5 aurora-bg rounded-full" />
                 )}
               </Link>
             );
@@ -109,7 +116,7 @@ export function Nav() {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="md:hidden border-t border-rule bg-paper px-4 py-5 flex flex-col gap-3">
+        <div className="md:hidden border-t border-rule bg-paper/95 backdrop-blur-xl px-4 py-5 flex flex-col gap-3">
           {navLinks.map((link) => {
             const active = pathname === link.href || pathname.startsWith(link.href + "/");
             return (
@@ -129,7 +136,7 @@ export function Nav() {
             <Link
               href="/quiz"
               onClick={() => setMobileOpen(false)}
-              className="font-mono text-xs tracking-wider text-accent hover:text-ink transition-colors"
+              className="btn-aurora self-start"
             >
               start the quiz →
             </Link>

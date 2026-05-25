@@ -3,40 +3,87 @@
 /* Enable class-based dark mode for next-themes */
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* ── Notebook palette ────────────────────────────────────────────────────── */
+/* ──────────────────────────────────────────────────────────────────────────
+   Aurora Mathematica — vibrant palette riding on warm notebook bones.
+   Light mode keeps a cream paper base; both modes share an aurora gradient
+   set used for accents, text-fills, glow rings, and hero washes.
+   ────────────────────────────────────────────────────────────────────── */
+
 :root {
-  --paper:        #faf6ef;
-  --paper-2:      #f3eee2;
-  --paper-3:      #ece7d8;
-  --rule:         #d6cdb8;
-  --ink:          #1f1d1a;
-  --ink-muted:    #6b665c;
-  --ink-faint:    #a8a08f;
-  --accent:       #1d3557;
-  --accent-soft:  #e7ecf2;
-  --marker:       #c1272d;
-  --highlight:    #f4dc8b;
+  /* Notebook surfaces */
+  --paper:        #fbf7ee;
+  --paper-2:      #f4eedf;
+  --paper-3:      #ebe4cf;
+  --rule:         #ddd2b6;
+  --ink:          #1a1626;
+  --ink-muted:    #5c5468;
+  --ink-faint:    #9a92a8;
+
+  /* Legacy compatibility (kept so unchanged components still work) */
+  --accent:       #5b21b6;          /* deep violet — was navy */
+  --accent-soft:  #ede9fe;
+  --marker:       #e11d48;          /* rose-red */
+  --highlight:    #fde68a;
+
+  /* Aurora palette (vibrant, used for gradients / fills / glows) */
+  --aurora-1: #8b5cf6;   /* violet */
+  --aurora-2: #06b6d4;   /* cyan  */
+  --aurora-3: #84cc16;   /* lime  */
+  --aurora-4: #f43f5e;   /* rose  */
+  --aurora-5: #f59e0b;   /* amber */
+  --aurora-6: #2563eb;   /* electric blue */
+
+  /* Composable gradients */
+  --grad-aurora:
+    linear-gradient(120deg,
+      var(--aurora-1) 0%,
+      var(--aurora-2) 40%,
+      var(--aurora-3) 70%,
+      var(--aurora-5) 100%);
+  --grad-warm:
+    linear-gradient(120deg, var(--aurora-4), var(--aurora-5) 50%, var(--aurora-1));
+  --grad-cool:
+    linear-gradient(120deg, var(--aurora-6), var(--aurora-1) 50%, var(--aurora-2));
+  --grad-acid:
+    linear-gradient(120deg, var(--aurora-3), var(--aurora-2) 60%, var(--aurora-1));
+
+  --glow-aurora: 0 0 0 1px color-mix(in oklab, var(--aurora-1) 30%, transparent),
+                 0 12px 40px -8px color-mix(in oklab, var(--aurora-1) 35%, transparent);
 }
 
 .dark {
-  --paper:        #16181a;
-  --paper-2:      #1d2022;
-  --paper-3:      #262a2c;
-  --rule:         #353a3d;
-  --ink:          #f1ece0;
-  --ink-muted:    #a8a499;
-  --ink-faint:    #6b675e;
-  --accent:       #9bbedd;
-  --accent-soft:  #1a232d;
-  --marker:       #e88a8a;
-  --highlight:    #4a4327;
+  /* Deep cosmic surfaces */
+  --paper:        #0b0a14;
+  --paper-2:      #14122a;
+  --paper-3:      #1d1a3a;
+  --rule:         #2c2752;
+  --ink:          #f5f0ff;
+  --ink-muted:    #b2a8d4;
+  --ink-faint:    #7a6fa3;
+
+  --accent:       #a78bfa;
+  --accent-soft:  #1d1a3a;
+  --marker:       #fb7185;
+  --highlight:    #3f3a17;
+
+  /* Aurora pops brighter on dark */
+  --aurora-1: #a78bfa;
+  --aurora-2: #22d3ee;
+  --aurora-3: #a3e635;
+  --aurora-4: #fb7185;
+  --aurora-5: #fbbf24;
+  --aurora-6: #60a5fa;
+
+  --glow-aurora: 0 0 0 1px color-mix(in oklab, var(--aurora-1) 45%, transparent),
+                 0 14px 48px -8px color-mix(in oklab, var(--aurora-1) 55%, transparent);
 }
 
 /* ── Tailwind theme tokens ───────────────────────────────────────────────── */
 @theme inline {
-  --font-sans:    var(--font-inter);
+  --font-sans:    var(--font-bricolage);
   --font-mono:    var(--font-jetbrains-mono);
-  --font-display: var(--font-newsreader);
+  --font-display: var(--font-fraunces);
+  --font-serif:   var(--font-newsreader);
 
   --color-paper:       var(--paper);
   --color-paper-2:     var(--paper-2);
@@ -49,100 +96,279 @@
   --color-accent-soft: var(--accent-soft);
   --color-marker:      var(--marker);
   --color-highlight:   var(--highlight);
+
+  --color-aurora-1: var(--aurora-1);
+  --color-aurora-2: var(--aurora-2);
+  --color-aurora-3: var(--aurora-3);
+  --color-aurora-4: var(--aurora-4);
+  --color-aurora-5: var(--aurora-5);
+  --color-aurora-6: var(--aurora-6);
 }
 
-* {
-  box-sizing: border-box;
-}
-
-html {
-  scroll-behavior: smooth;
-}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
 
 body {
   min-height: 100vh;
-  font-feature-settings: "kern" 1, "liga" 1;
+  font-feature-settings: "kern" 1, "liga" 1, "ss01" 1;
   background-color: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Aurora gradient utilities
+   ────────────────────────────────────────────────────────────────────── */
+
+.aurora-text {
+  background: var(--grad-aurora);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  background-size: 200% 200%;
+  animation: aurora-shift 14s ease-in-out infinite;
+}
+.aurora-text-warm { background: var(--grad-warm); -webkit-background-clip: text; background-clip: text; color: transparent; background-size: 200% 200%; animation: aurora-shift 14s ease-in-out infinite; }
+.aurora-text-cool { background: var(--grad-cool); -webkit-background-clip: text; background-clip: text; color: transparent; background-size: 200% 200%; animation: aurora-shift 14s ease-in-out infinite; }
+.aurora-text-acid { background: var(--grad-acid); -webkit-background-clip: text; background-clip: text; color: transparent; background-size: 200% 200%; animation: aurora-shift 14s ease-in-out infinite; }
+
+@keyframes aurora-shift {
+  0%,   100% { background-position: 0% 50%; }
+  50%        { background-position: 100% 50%; }
+}
+
+.aurora-bg {
+  background: var(--grad-aurora);
+  background-size: 200% 200%;
+  animation: aurora-shift 16s ease-in-out infinite;
+}
+
+.aurora-ring { box-shadow: var(--glow-aurora); }
+
+/* Gradient border via mask (works on any radius) */
+.gradient-border {
+  position: relative;
+  isolation: isolate;
+}
+.gradient-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: var(--grad-aurora);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0.55;
+  transition: opacity 0.25s ease;
+}
+.gradient-border:hover::before { opacity: 1; }
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Animated mesh blobs — used as a background layer for hero / page wash
+   ────────────────────────────────────────────────────────────────────── */
+
+.aurora-mesh {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+.aurora-mesh::before,
+.aurora-mesh::after,
+.aurora-mesh > .blob {
+  content: "";
+  position: absolute;
+  width: 55vmax;
+  height: 55vmax;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.45;
+  mix-blend-mode: screen;
+  will-change: transform;
+}
+.dark .aurora-mesh::before,
+.dark .aurora-mesh::after,
+.dark .aurora-mesh > .blob { opacity: 0.55; }
+
+.aurora-mesh::before {
+  background: radial-gradient(circle at 30% 30%, var(--aurora-1), transparent 60%);
+  top: -20%;
+  left: -10%;
+  animation: blob-drift-a 22s ease-in-out infinite alternate;
+}
+.aurora-mesh::after {
+  background: radial-gradient(circle at 70% 60%, var(--aurora-2), transparent 60%);
+  bottom: -25%;
+  right: -15%;
+  animation: blob-drift-b 26s ease-in-out infinite alternate;
+}
+.aurora-mesh > .blob {
+  background: radial-gradient(circle at 50% 50%, var(--aurora-4), transparent 60%);
+  top: 30%;
+  left: 40%;
+  animation: blob-drift-c 30s ease-in-out infinite alternate;
+}
+.aurora-mesh > .blob.acid {
+  background: radial-gradient(circle at 50% 50%, var(--aurora-3), transparent 60%);
+  top: 55%;
+  left: 10%;
+  animation: blob-drift-d 28s ease-in-out infinite alternate;
+}
+
+@keyframes blob-drift-a { from { transform: translate3d(0,0,0) scale(1); } to { transform: translate3d(15vw,8vh,0) scale(1.15); } }
+@keyframes blob-drift-b { from { transform: translate3d(0,0,0) scale(1); } to { transform: translate3d(-12vw,-10vh,0) scale(1.1); } }
+@keyframes blob-drift-c { from { transform: translate3d(0,0,0) scale(0.9); } to { transform: translate3d(-8vw,12vh,0) scale(1.2); } }
+@keyframes blob-drift-d { from { transform: translate3d(0,0,0) scale(1.1); } to { transform: translate3d(10vw,-6vh,0) scale(0.95); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .aurora-text, .aurora-text-warm, .aurora-text-cool, .aurora-text-acid, .aurora-bg { animation: none; }
+  .aurora-mesh::before, .aurora-mesh::after, .aurora-mesh > .blob { animation: none; }
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Aurora button — primary CTA with gradient + glow
+   ────────────────────────────────────────────────────────────────────── */
+
+.btn-aurora {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  color: #fff;
+  background: var(--grad-aurora);
+  background-size: 200% 200%;
+  border-radius: 999px;
+  transition: transform 0.2s ease, box-shadow 0.25s ease, background-position 0.4s ease;
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.15) inset,
+    0 8px 24px -8px color-mix(in oklab, var(--aurora-1) 70%, transparent);
+  cursor: pointer;
+  border: none;
+  isolation: isolate;
+  overflow: hidden;
+}
+.btn-aurora:hover {
+  transform: translateY(-1px);
+  background-position: 100% 50%;
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.2) inset,
+    0 14px 40px -8px color-mix(in oklab, var(--aurora-1) 80%, transparent);
+}
+.btn-aurora::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(80% 60% at 50% 0%, rgba(255,255,255,0.35), transparent 60%);
+  pointer-events: none;
+  opacity: 0.7;
+  z-index: -1;
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  color: var(--ink);
+  background: transparent;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+.btn-ghost:hover {
+  border-color: transparent;
+  background: linear-gradient(var(--paper), var(--paper)) padding-box,
+              var(--grad-aurora) border-box;
+  border: 1px solid transparent;
   color: var(--ink);
 }
 
-/* ── Dot-grid background ─────────────────────────────────────────────────── */
+/* ──────────────────────────────────────────────────────────────────────────
+   Dot grid + paper grain (kept; tuned for new palette)
+   ────────────────────────────────────────────────────────────────────── */
+
 .dot-grid {
   background-image: radial-gradient(circle, var(--rule) 1px, transparent 1px);
   background-size: 24px 24px;
 }
-
 .dot-grid-strong {
   background-image: radial-gradient(circle, var(--rule) 1.5px, transparent 1.5px);
   background-size: 20px 20px;
 }
 
-/* ── Ink rule divider ────────────────────────────────────────────────────── */
-.ink-rule {
-  border: none;
-  border-top: 1px solid var(--rule);
-}
+.ink-rule { border: none; border-top: 1px solid var(--rule); }
 
-/* ── Drop cap for article intros ─────────────────────────────────────────── */
 .drop-cap::first-letter {
-  font-family: var(--font-newsreader), Georgia, serif;
+  font-family: var(--font-display), Georgia, serif;
   font-size: 3.5em;
   font-weight: 400;
   line-height: 0.8;
   float: left;
   margin-right: 0.08em;
   margin-top: 0.05em;
-  color: var(--ink);
+  background: var(--grad-aurora);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
-/* ── Math symbol (mono, light weight) ───────────────────────────────────── */
 .math-symbol {
-  font-family: var(--font-jetbrains-mono), monospace;
+  font-family: var(--font-mono), monospace;
   font-weight: 300;
 }
 
-/* ── Sidenote (margin annotation) ───────────────────────────────────────── */
 .sidenote {
-  font-family: var(--font-jetbrains-mono), monospace;
+  font-family: var(--font-mono), monospace;
   font-size: 0.72rem;
   color: var(--ink-faint);
   line-height: 1.5;
 }
 
-/* ── Card hover ──────────────────────────────────────────────────────────── */
-.card-hover {
-  transition: box-shadow 0.15s ease;
-}
+.card-hover { transition: box-shadow 0.2s ease, transform 0.2s ease; }
 .card-hover:hover {
-  box-shadow: 0 2px 12px 0 rgba(0,0,0,0.06);
+  box-shadow: 0 8px 28px -8px color-mix(in oklab, var(--aurora-1) 35%, transparent),
+              0 2px 8px -2px rgba(0,0,0,0.08);
+  transform: translateY(-2px);
 }
 
-/* ── Focus ring ──────────────────────────────────────────────────────────── */
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--aurora-1);
   outline-offset: 2px;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--aurora-1), var(--aurora-2));
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, var(--aurora-2), var(--aurora-4)); }
+
+/* Highlighter swipe (used by hero) — now a vibrant aurora streak */
+.marker-highlight {
+  background:
+    linear-gradient(180deg, transparent 52%,
+      color-mix(in oklab, var(--aurora-5) 70%, transparent) 52%,
+      color-mix(in oklab, var(--aurora-4) 70%, transparent) 91%,
+      transparent 91%);
+  padding: 0 0.12em;
   border-radius: 2px;
 }
 
-/* ── Scrollbar ───────────────────────────────────────────────────────────── */
-::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 2px; }
-::-webkit-scrollbar-thumb:hover { background: var(--ink-faint); }
-
-/* ── Marker highlight (highlighter swipe behind text) ───────────────────── */
-.marker-highlight {
-  background: linear-gradient(
-    180deg,
-    transparent 52%,
-    var(--highlight) 52%,
-    var(--highlight) 91%,
-    transparent 91%
-  );
-  padding: 0 0.12em;
-}
-
-/* ── Paper grain (subtle noise texture) ─────────────────────────────────── */
 .paper-grain {
   background-image:
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"),
@@ -151,7 +377,7 @@ body {
   background-size: 200px 200px, auto;
 }
 
-/* ── Tilt utilities (notebook-pinned card feel) ──────────────────────────── */
+/* Tilt utilities */
 .tilt-left  { transform: rotate(-1.3deg); }
 .tilt-right { transform: rotate(1.3deg); }
 
@@ -159,42 +385,30 @@ body {
   .tilt-left, .tilt-right { transform: none; }
 }
 
-/* ── Washi tape strip ────────────────────────────────────────────────────── */
+/* Washi tape — now uses aurora hues */
 .washi-tape {
-  position: absolute;
-  top: -10px;
-  left: 50%;
+  position: absolute; top: -10px; left: 50%;
   transform: translateX(-50%) rotate(-2deg);
-  width: 56px;
-  height: 22px;
-  background: rgba(193, 39, 45, 0.16);
-  border-radius: 2px;
-  pointer-events: none;
+  width: 56px; height: 22px;
+  background: color-mix(in oklab, var(--aurora-4) 32%, transparent);
+  border-radius: 2px; pointer-events: none;
 }
 .washi-tape-blue {
-  position: absolute;
-  top: -10px;
-  left: 50%;
+  position: absolute; top: -10px; left: 50%;
   transform: translateX(-50%) rotate(1.5deg);
-  width: 56px;
-  height: 22px;
-  background: rgba(29, 53, 87, 0.14);
-  border-radius: 2px;
-  pointer-events: none;
+  width: 56px; height: 22px;
+  background: color-mix(in oklab, var(--aurora-2) 32%, transparent);
+  border-radius: 2px; pointer-events: none;
 }
 .washi-tape-yellow {
-  position: absolute;
-  top: -10px;
-  left: 50%;
+  position: absolute; top: -10px; left: 50%;
   transform: translateX(-50%) rotate(-1deg);
-  width: 56px;
-  height: 22px;
-  background: rgba(244, 220, 139, 0.5);
-  border-radius: 2px;
-  pointer-events: none;
+  width: 56px; height: 22px;
+  background: color-mix(in oklab, var(--aurora-5) 50%, transparent);
+  border-radius: 2px; pointer-events: none;
 }
 
-/* ── Ink draw-on animation ───────────────────────────────────────────────── */
+/* Ink draw-on animation */
 @keyframes ink-draw {
   from { stroke-dashoffset: 200; opacity: 0.4; }
   to   { stroke-dashoffset: 0;   opacity: 1; }
@@ -208,14 +422,38 @@ body {
   .ink-draw path { animation: none; stroke-dashoffset: 0; }
 }
 
-/* ── Pinned-paper drop shadow ────────────────────────────────────────────── */
+/* Pinned-paper drop shadow — softened to fit vibrant surface */
 .dropshadow-paper {
   box-shadow:
-    2px 3px 0 var(--rule),
-    6px 8px 18px rgba(31, 29, 26, 0.07);
+    2px 3px 0 color-mix(in oklab, var(--aurora-1) 25%, var(--rule)),
+    6px 8px 22px rgba(31, 29, 26, 0.08);
 }
 .dark .dropshadow-paper {
   box-shadow:
-    2px 3px 0 var(--rule),
-    6px 8px 18px rgba(0, 0, 0, 0.25);
+    2px 3px 0 color-mix(in oklab, var(--aurora-1) 40%, var(--rule)),
+    6px 8px 26px rgba(0, 0, 0, 0.45);
 }
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Staggered reveal — used by hero text
+   ────────────────────────────────────────────────────────────────────── */
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.rise-in {
+  opacity: 0;
+  animation: rise-in 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+}
+.rise-in.d1 { animation-delay: 0.05s; }
+.rise-in.d2 { animation-delay: 0.18s; }
+.rise-in.d3 { animation-delay: 0.32s; }
+.rise-in.d4 { animation-delay: 0.46s; }
+.rise-in.d5 { animation-delay: 0.6s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .rise-in { opacity: 1; animation: none; transform: none; }
+}
+
+/* Numeric tabular figures for stats */
+.tabular-nums { font-variant-numeric: tabular-nums; }

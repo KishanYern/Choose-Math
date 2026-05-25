@@ -1,5 +1,7 @@
 import type { NextConfig } from "next";
 
+const isDev = process.env.NODE_ENV === "development";
+
 const nextConfig: NextConfig = {
   async headers() {
     return [
@@ -9,10 +11,11 @@ const nextConfig: NextConfig = {
           {
             key: "Content-Security-Policy",
             // unsafe-inline required by Next.js runtime for inline scripts/styles;
+            // unsafe-eval required by React in development mode only (never sent in prod);
             // frame-src covers Google sign-in pop-up and Firebase auth domain.
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-inline' https://apis.google.com https://www.gstatic.com",
+              `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""} https://apis.google.com https://www.gstatic.com`,
               "style-src 'self' 'unsafe-inline'",
               "img-src 'self' data: https://*.googleusercontent.com",
               "connect-src 'self' https://*.googleapis.com https://*.firebaseio.com https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com",

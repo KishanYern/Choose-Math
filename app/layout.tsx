@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono, Newsreader } from "next/font/google";
+import { Bricolage_Grotesque, JetBrains_Mono, Fraunces, Newsreader } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { AuthProvider } from "@/components/AuthProvider";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 
-const inter = Inter({
-  variable: "--font-inter",
+const bricolage = Bricolage_Grotesque({
+  variable: "--font-bricolage",
   subsets: ["latin"],
   display: "swap",
 });
@@ -18,6 +18,14 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
+const fraunces = Fraunces({
+  variable: "--font-fraunces",
+  subsets: ["latin"],
+  display: "swap",
+  style: ["normal", "italic"],
+});
+
+// Newsreader retained for legacy components that still reference it.
 const newsreader = Newsreader({
   variable: "--font-newsreader",
   subsets: ["latin"],
@@ -59,14 +67,14 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${jetbrainsMono.variable} ${newsreader.variable}`}
+      className={`${bricolage.variable} ${jetbrainsMono.variable} ${fraunces.variable} ${newsreader.variable}`}
       suppressHydrationWarning
     >
-      <body className="bg-paper text-ink flex flex-col min-h-screen antialiased dot-grid">
+      <body className="bg-paper text-ink flex flex-col min-h-screen antialiased">
         <ThemeProvider>
           <AuthProvider>
             <Nav />
-            <main className="flex-1">{children}</main>
+            <main className="flex-1 relative">{children}</main>
             <Footer />
           </AuthProvider>
         </ThemeProvider>

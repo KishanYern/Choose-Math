@@ -6,7 +6,6 @@ import { StoryCard } from "@/components/StoryCard";
 import { FAQAccordion } from "@/components/FAQAccordion";
 import { QuizEngine } from "@/components/QuizEngine";
 import {
-  InkUnderline,
   InkRule,
   InkAsterisk,
   InkDoodleDivider,
@@ -22,7 +21,7 @@ const stats = [
     sub: "Math degree holders, 2023",
     sourceLabel: "BLS",
     sourceUrl: "https://www.bls.gov/ooh/field-of-degree/mathematics/mathematics-field-of-degree.htm",
-    highlight: true,
+    gradient: "var(--grad-aurora)",
   },
   {
     value: "34%",
@@ -30,7 +29,7 @@ const stats = [
     sub: "Projected 2024–34",
     sourceLabel: "BLS",
     sourceUrl: "https://www.bls.gov/ooh/math/data-scientists.htm",
-    highlight: false,
+    gradient: "var(--grad-cool)",
   },
   {
     value: "22%",
@@ -38,7 +37,7 @@ const stats = [
     sub: "Projected 2024–34",
     sourceLabel: "BLS",
     sourceUrl: "https://www.bls.gov/ooh/math/actuaries.htm",
-    highlight: false,
+    gradient: "var(--grad-acid)",
   },
   {
     value: "20%",
@@ -46,91 +45,134 @@ const stats = [
     sub: "Projected 2024–34",
     sourceLabel: "BLS",
     sourceUrl: "https://www.bls.gov/ooh/computer-and-information-technology/computer-and-information-research-scientists.htm",
-    highlight: false,
+    gradient: "var(--grad-warm)",
   },
 ];
 
-const streakColors = ["bg-marker", "bg-accent", "bg-highlight", "bg-ink-faint"];
+const pillars = [
+  {
+    symbol: "∂",
+    title: "Deep Rigor",
+    desc: "Train your brain to reason precisely about hard problems — the rarest cognitive skill in any workforce.",
+    gradient: "linear-gradient(135deg, var(--aurora-1), var(--aurora-2))",
+  },
+  {
+    symbol: "∇",
+    title: "Endless Applications",
+    desc: "Finance, AI, cryptography, physics, engineering, medicine — math underlies every quantitative field.",
+    gradient: "linear-gradient(135deg, var(--aurora-2), var(--aurora-3))",
+  },
+  {
+    symbol: "∞",
+    title: "Career Optionality",
+    desc: "Switch between academia and industry freely. Math expertise translates across sectors.",
+    gradient: "linear-gradient(135deg, var(--aurora-4), var(--aurora-5))",
+  },
+  {
+    symbol: "Σ",
+    title: "Strong Compensation",
+    desc: "Several math-heavy roles have high median pay and strong projected growth in public labor data.",
+    gradient: "linear-gradient(135deg, var(--aurora-5), var(--aurora-1))",
+  },
+];
 
 export default function HomePage() {
   const featuredCareers = getFeaturedCareers();
   const featuredStories = stories.slice(0, 3);
 
   return (
-    <div>
+    <div className="relative">
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
-      <section className="border-b border-rule">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-12 items-start">
-            {/* Main content */}
+      <section className="relative overflow-hidden border-b border-rule/60">
+        {/* Animated aurora mesh background */}
+        <div className="aurora-mesh" aria-hidden>
+          <span className="blob" />
+          <span className="blob acid" />
+        </div>
+        {/* Subtle dot grid over the mesh */}
+        <div
+          className="absolute inset-0 dot-grid opacity-40 pointer-events-none"
+          aria-hidden
+        />
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-32">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-12 items-start">
             <div>
-              <p className="font-mono text-xs text-ink-faint tracking-widest mb-6 uppercase">
+              <p className="font-mono text-[11px] text-ink-muted tracking-[0.25em] mb-8 uppercase rise-in d1 inline-flex items-center gap-2">
+                <span className="inline-block h-1.5 w-1.5 rounded-full aurora-bg" />
                 No. 01 — a field guide
               </p>
 
-              <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl text-ink font-normal leading-[1.05] mb-6">
-                A small field guide
-                <br />
-                <span className="italic">to </span>
-                <span className="relative inline-block">
-                  <span className="relative z-10 italic">careers in</span>
-                  {/* Highlighter swipe */}
-                  <span
-                    className="absolute inset-x-0 bottom-1 h-[0.45em] bg-highlight opacity-50 -z-0 pointer-events-none"
-                    aria-hidden="true"
-                  />
+              <h1 className="font-display text-[3.25rem] sm:text-7xl lg:text-[5.5rem] text-ink font-medium leading-[0.95] tracking-[-0.025em] mb-8">
+                <span className="block rise-in d1">A field guide</span>
+                <span className="block rise-in d2">
+                  <span className="italic font-light text-ink-muted">to careers in</span>
                 </span>
-                <br />
-                mathematics.
+                <span className="block rise-in d3 relative">
+                  <span className="aurora-text italic">mathematics.</span>
+                  {/* Scribble circle overlay */}
+                  <span
+                    aria-hidden
+                    className="absolute -top-4 -right-4 sm:-right-8 text-aurora-4/40 hidden sm:block"
+                  >
+                    <InkScribbleCircle size={88} />
+                  </span>
+                </span>
               </h1>
 
-              {/* Equation accent with scribble circle */}
-              <div className="relative inline-flex items-center gap-2 mb-8">
-                <p className="font-mono text-sm text-ink-faint tracking-wide">
-                  ƒ(career) = passion · rigor
+              <div className="relative inline-flex items-center gap-2 mb-10 rise-in d4">
+                <p className="font-mono text-sm text-ink-muted tracking-wide">
+                  ƒ(<span className="aurora-text-cool font-semibold">career</span>) ={" "}
+                  <span className="aurora-text-warm font-semibold">passion</span> ·{" "}
+                  <span className="aurora-text-acid font-semibold">rigor</span>
                 </p>
-                <span className="absolute -top-3 -right-5 text-marker opacity-40 pointer-events-none">
-                  <InkScribbleCircle size={52} />
-                </span>
               </div>
 
-              <div className="flex flex-col sm:flex-row items-start gap-3">
-                <a
-                  href="#quiz"
-                  className="font-mono text-xs tracking-wider px-7 py-3 bg-accent text-paper hover:bg-ink transition-colors"
-                >
-                  start the quiz →
+              <div className="flex flex-col sm:flex-row items-start gap-4 rise-in d5">
+                <a href="#quiz" className="btn-aurora">
+                  start the quiz <span aria-hidden>→</span>
                 </a>
-                <Link
-                  href="/careers"
-                  className="font-mono text-xs tracking-wider px-7 py-3 border border-rule text-ink-muted hover:border-ink-faint hover:text-ink transition-colors"
-                >
+                <Link href="/careers" className="btn-ghost">
                   browse careers
                 </Link>
               </div>
+
+              {/* Trust strip */}
+              <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-ink-muted font-mono tracking-wider rise-in d5">
+                <span className="inline-flex items-center gap-1.5">
+                  <span className="inline-block h-1 w-1 rounded-full bg-aurora-3" /> 3-min quiz
+                </span>
+                <span className="inline-flex items-center gap-1.5">
+                  <span className="inline-block h-1 w-1 rounded-full bg-aurora-2" /> no account needed
+                </span>
+                <span className="inline-flex items-center gap-1.5">
+                  <span className="inline-block h-1 w-1 rounded-full bg-aurora-4" /> BLS-sourced data
+                </span>
+              </div>
             </div>
 
-            {/* Margin note — tilted, pinned */}
-            <div className="hidden lg:block pt-4">
-              <div className="relative tilt-right dropshadow-paper border border-rule bg-paper-2 p-5">
+            {/* Margin note — tilted, pinned, with gradient border */}
+            <div className="hidden lg:block pt-4 rise-in d4">
+              <div className="relative tilt-right dropshadow-paper border border-rule bg-paper-2/80 backdrop-blur-md p-6 rounded-2xl gradient-border">
                 <span className="absolute -top-1 left-4">
-                  <InkPaperclip size={18} className="text-ink-faint opacity-50" />
+                  <InkPaperclip size={18} className="text-ink-faint opacity-60" />
                 </span>
-                <p className="sidenote mb-3 text-ink-faint uppercase tracking-widest">note</p>
-                <p className="font-display italic text-ink text-base leading-relaxed">
+                <p className="sidenote mb-3 text-ink-muted uppercase tracking-widest">
+                  <span className="aurora-text-cool font-semibold">note</span>
+                </p>
+                <p className="font-display italic text-ink text-lg leading-relaxed">
                   for the curious, the precise, the pattern-seekers.
                 </p>
-                <div className="border-t border-rule mt-4 pt-4">
-                  <p className="sidenote text-ink-faint">
+                <div className="border-t border-rule mt-5 pt-4">
+                  <p className="sidenote text-ink-muted">
                     takes about 3 minutes · no account needed
                   </p>
                 </div>
               </div>
 
-              {/* Doodle arrow + hand-annotation below the card */}
-              <div className="mt-5 flex items-center gap-2 pl-2 text-ink-faint">
-                <InkArrowHand className="w-10 h-7 text-ink-faint opacity-50" rotate={170} />
-                <span className="font-display italic text-xs text-ink-faint opacity-70 select-none">
+              <div className="mt-5 flex items-center gap-2 pl-2 text-ink-muted">
+                <InkArrowHand className="w-10 h-7 text-aurora-1 opacity-70" rotate={170} />
+                <span className="font-display italic text-sm text-ink-muted select-none">
                   start here
                 </span>
               </div>
@@ -140,31 +182,39 @@ export default function HomePage() {
       </section>
 
       {/* ── Stats ────────────────────────────────────────────────────────── */}
-      <section className="border-b border-rule bg-paper-2">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-          <div className="grid grid-cols-2 md:grid-cols-4">
-            {stats.map((stat, i) => (
+      <section className="relative border-b border-rule/60 bg-paper-2/60">
+        <div className="absolute inset-0 dot-grid opacity-30 pointer-events-none" aria-hidden />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-rule/60 rounded-2xl overflow-hidden border border-rule/60">
+            {stats.map((stat) => (
               <div
                 key={stat.label}
-                className={`text-center px-4 py-2 md:py-0 ${i % 2 === 0 ? "border-r border-rule" : ""} ${i >= 2 ? "border-t md:border-t-0 border-rule" : ""} md:border-r md:last:border-r-0 md:px-6`}
+                className="bg-paper p-6 sm:p-8 text-center flex flex-col items-center"
               >
-                <p className={`font-display text-3xl md:text-4xl font-normal mb-1 ${stat.highlight ? "marker-highlight text-ink" : "text-ink"}`}>
+                <p
+                  className="font-display text-4xl sm:text-5xl font-medium mb-2 tabular-nums leading-none"
+                  style={{
+                    background: stat.gradient,
+                    backgroundSize: "200% 200%",
+                    WebkitBackgroundClip: "text",
+                    backgroundClip: "text",
+                    color: "transparent",
+                  }}
+                >
                   {stat.value}
                 </p>
-                {/* Ink underline instead of plain rule */}
-                <div className="ink-draw text-marker mx-auto mb-2 w-10">
-                  <InkUnderline />
-                </div>
-                <p className="text-ink-muted text-xs font-medium">{stat.label}</p>
-                <p className="font-mono text-[10px] text-ink-faint mt-0.5">{stat.sub}</p>
-                {!stat.highlight && (
-                  <span className="font-mono text-[10px] text-ink-faint mt-0.5 inline-block">↗</span>
-                )}
+                <div
+                  aria-hidden
+                  className="h-[2px] w-10 rounded-full mb-3"
+                  style={{ background: stat.gradient }}
+                />
+                <p className="text-ink text-xs font-semibold uppercase tracking-wider">{stat.label}</p>
+                <p className="font-mono text-[10px] text-ink-muted mt-1">{stat.sub}</p>
                 <a
                   href={stat.sourceUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-mono text-[10px] text-accent hover:text-ink transition-colors mt-1 inline-block tracking-wider"
+                  className="font-mono text-[10px] text-ink-muted hover:text-ink transition-colors mt-2 tracking-wider"
                 >
                   source: {stat.sourceLabel} ↗
                 </a>
@@ -175,52 +225,73 @@ export default function HomePage() {
       </section>
 
       {/* ── What is math? ─────────────────────────────────────────────────── */}
-      <section className="border-b border-rule">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+      <section className="border-b border-rule/60">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
             <div>
-              <p className="font-mono text-xs text-ink-faint tracking-widest mb-6 uppercase">
+              <p className="font-mono text-[11px] text-ink-muted tracking-[0.25em] mb-6 uppercase inline-flex items-center gap-2">
+                <span className="inline-block h-1.5 w-1.5 rounded-full bg-aurora-4" />
                 No. 02 — more than equations
               </p>
-              <h2 className="font-display text-3xl sm:text-4xl text-ink font-normal mb-6 leading-snug">
+              <h2 className="font-display text-4xl sm:text-5xl text-ink font-medium mb-6 leading-[1.05] tracking-tight">
                 Mathematicians are the{" "}
-                <span className="marker-highlight">problem-solvers</span>{" "}
+                <span className="aurora-text-warm italic">problem-solvers</span>{" "}
                 modern society depends on.
               </h2>
-              <p className="text-ink-muted leading-relaxed mb-5">
+              <p className="text-ink-muted leading-relaxed mb-5 text-lg">
                 Designing the algorithms that secure your data, pricing the derivatives that manage
                 financial risk, building the models that power AI, proving the theorems that become
                 tomorrow&apos;s technology.
               </p>
-              <p className="text-ink-muted leading-relaxed mb-8">
+              <p className="text-ink-muted leading-relaxed mb-8 text-lg">
                 A mathematics degree is unique in how transferable it is. The abstract reasoning,
                 rigorous proof-writing, and quantitative modeling skills it builds are the exact
                 toolkit that every data-driven industry is desperately seeking.
               </p>
-              <blockquote className="border-l border-accent pl-5">
-                <p className="font-display italic text-ink text-base leading-relaxed">
+              <blockquote className="relative pl-6">
+                <span
+                  aria-hidden
+                  className="absolute left-0 top-1 bottom-1 w-[3px] rounded-full"
+                  style={{ background: "var(--grad-aurora)" }}
+                />
+                <p className="font-display italic text-ink text-lg leading-relaxed">
                   &ldquo;Pure mathematics is, in its way, the poetry of logical ideas.&rdquo;
                 </p>
-                <footer className="font-mono text-[11px] text-ink-faint mt-2 tracking-wider">— Albert Einstein</footer>
+                <footer className="font-mono text-[11px] text-ink-muted mt-2 tracking-wider">
+                  — Albert Einstein
+                </footer>
               </blockquote>
             </div>
 
-            {/* 4-cell grid — tilted notebook cards */}
+            {/* 4-cell pillar grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {[
-                { symbol: "∂", title: "Deep Rigor", desc: "Train your brain to reason precisely about hard problems — the rarest cognitive skill in any workforce.", tilt: "tilt-left", streak: 0 },
-                { symbol: "∇", title: "Endless Applications", desc: "Finance, AI, cryptography, physics, engineering, medicine — math underlies every quantitative field.", tilt: "tilt-right", streak: 1 },
-                { symbol: "∞", title: "Career Optionality", desc: "Switch between academia and industry freely. Math expertise translates across sectors.", tilt: "tilt-right", streak: 2 },
-                { symbol: "Σ", title: "Strong Compensation", desc: "Several math-heavy roles have high median pay and strong projected growth in public labor data.", tilt: "tilt-left", streak: 3 },
-              ].map((item) => (
-                <div key={item.title} className={`bg-paper-2 border border-rule dropshadow-paper overflow-hidden ${item.tilt}`}>
-                  {/* Colored streak at top */}
-                  <div className={`h-1 w-full ${streakColors[item.streak]} opacity-70`} />
+              {pillars.map((item, i) => (
+                <div
+                  key={item.title}
+                  className={`relative bg-paper-2 border border-rule rounded-2xl overflow-hidden dropshadow-paper gradient-border ${
+                    i % 2 === 0 ? "tilt-left" : "tilt-right"
+                  }`}
+                >
+                  <div
+                    aria-hidden
+                    className="h-1 w-full"
+                    style={{ background: item.gradient }}
+                  />
                   <div className="p-6">
-                    <span className="font-mono text-2xl text-ink-faint font-light block mb-3 transition-transform duration-200 hover:scale-125 cursor-default select-none">
+                    <span
+                      className="font-display text-3xl block mb-3 leading-none transition-transform duration-200 hover:scale-125 cursor-default select-none"
+                      style={{
+                        background: item.gradient,
+                        WebkitBackgroundClip: "text",
+                        backgroundClip: "text",
+                        color: "transparent",
+                      }}
+                    >
                       {item.symbol}
                     </span>
-                    <h3 className="font-display text-base text-ink font-normal mb-2">{item.title}</h3>
+                    <h3 className="font-display text-lg text-ink font-medium mb-2 tracking-tight">
+                      {item.title}
+                    </h3>
                     <p className="text-ink-muted text-sm leading-relaxed">{item.desc}</p>
                   </div>
                 </div>
@@ -231,25 +302,30 @@ export default function HomePage() {
       </section>
 
       {/* ── Featured Careers ──────────────────────────────────────────────── */}
-      <section className="border-b border-rule">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-          <div className="flex items-baseline justify-between mb-10 gap-4">
+      <section className="relative border-b border-rule/60 overflow-hidden">
+        <div className="aurora-mesh opacity-50" aria-hidden>
+          <span className="blob" />
+        </div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+          <div className="flex items-end justify-between mb-12 gap-4 flex-wrap">
             <div>
-              <p className="font-mono text-xs text-ink-faint tracking-widest mb-3 uppercase">No. 03 — career paths</p>
-              <h2 className="font-display text-3xl sm:text-4xl text-ink font-normal leading-snug">
-                Featured Career Paths
+              <p className="font-mono text-[11px] text-ink-muted tracking-[0.25em] mb-3 uppercase inline-flex items-center gap-2">
+                <span className="inline-block h-1.5 w-1.5 rounded-full bg-aurora-2" />
+                No. 03 — career paths
+              </p>
+              <h2 className="font-display text-4xl sm:text-5xl text-ink font-medium leading-[1.05] tracking-tight">
+                Featured <span className="aurora-text-cool italic">paths</span>
               </h2>
             </div>
             <Link
               href="/careers"
-              className="font-mono text-xs text-ink-faint hover:text-ink transition-colors tracking-wider shrink-0"
+              className="btn-ghost"
             >
               all 8 paths →
             </Link>
           </div>
 
-          {/* Asymmetric grid: first card featured (spans 2 cols on md+) */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-rule">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {featuredCareers.map((career, i) => (
               <div key={career.id} className={i === 0 ? "md:col-span-2 lg:col-span-1" : ""}>
                 <CareerCard career={career} index={i} featured={i === 0} />
@@ -260,17 +336,27 @@ export default function HomePage() {
       </section>
 
       {/* ── Quiz ─────────────────────────────────────────────────────────── */}
-      <section className="border-b border-rule bg-paper-2 paper-grain" id="quiz">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-20">
-          <div className="mb-12">
-            <p className="font-mono text-xs text-ink-faint tracking-widest mb-4 uppercase">No. 04 — find your path</p>
-            <h2 className="font-display text-3xl sm:text-4xl text-ink font-normal mb-3 leading-snug">
+      <section
+        className="relative border-b border-rule/60 paper-grain overflow-hidden"
+        id="quiz"
+        style={{ background: "color-mix(in oklab, var(--aurora-1) 4%, var(--paper-2))" }}
+      >
+        <div className="aurora-mesh opacity-40" aria-hidden>
+          <span className="blob acid" />
+        </div>
+        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 py-24">
+          <div className="mb-12 text-center">
+            <p className="font-mono text-[11px] text-ink-muted tracking-[0.25em] mb-4 uppercase inline-flex items-center gap-2">
+              <span className="inline-block h-1.5 w-1.5 rounded-full bg-aurora-5" />
+              No. 04 — find your path
+            </p>
+            <h2 className="font-display text-4xl sm:text-5xl text-ink font-medium mb-4 leading-[1.05] tracking-tight">
               Not sure which path is{" "}
-              <span className="marker-highlight">right</span>?
+              <span className="aurora-text italic">right</span>?
             </h2>
-            <p className="text-ink-muted leading-relaxed max-w-lg">
-              Answer a few honest questions and we&apos;ll identify whether you&apos;re a Pure Mathematician,
-              Applied Mathematician, Data Scientist, or Actuary at heart.
+            <p className="text-ink-muted leading-relaxed max-w-xl mx-auto text-lg">
+              Answer a few honest questions and we&apos;ll identify whether you&apos;re a Pure
+              Mathematician, Applied Mathematician, Data Scientist, or Actuary at heart.
             </p>
           </div>
           <QuizEngine />
@@ -278,27 +364,27 @@ export default function HomePage() {
       </section>
 
       {/* ── Alumni Stories ────────────────────────────────────────────────── */}
-      <section className="border-b border-rule">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-          <div className="flex items-baseline justify-between mb-10 gap-4">
+      <section className="border-b border-rule/60">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+          <div className="flex items-end justify-between mb-12 gap-4 flex-wrap">
             <div>
-              <p className="font-mono text-xs text-ink-faint tracking-widest mb-3 uppercase">No. 05 — alumni</p>
+              <p className="font-mono text-[11px] text-ink-muted tracking-[0.25em] mb-3 uppercase inline-flex items-center gap-2">
+                <span className="inline-block h-1.5 w-1.5 rounded-full bg-aurora-3" />
+                No. 05 — alumni
+              </p>
               <div className="flex items-center gap-3">
-                <h2 className="font-display text-3xl sm:text-4xl text-ink font-normal leading-snug">
-                  Where They Are Now
+                <h2 className="font-display text-4xl sm:text-5xl text-ink font-medium leading-[1.05] tracking-tight">
+                  Where they <span className="aurora-text-acid italic">are now</span>
                 </h2>
-                <InkAsterisk size={18} className="text-marker opacity-60 shrink-0" />
+                <InkAsterisk size={22} className="text-aurora-4 opacity-80 shrink-0" />
               </div>
             </div>
-            <Link
-              href="/stories"
-              className="font-mono text-xs text-ink-faint hover:text-ink transition-colors tracking-wider shrink-0"
-            >
+            <Link href="/stories" className="btn-ghost">
               all stories →
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 items-start">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10 items-start pt-4">
             {featuredStories.map((story, i) => (
               <StoryCard key={story.id} story={story} index={i} />
             ))}
@@ -307,45 +393,52 @@ export default function HomePage() {
       </section>
 
       {/* ── FAQ ───────────────────────────────────────────────────────────── */}
-      <section className="border-b border-rule bg-paper-2">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 py-20">
-          <div className="flex justify-center mb-6 text-ink-faint">
-            <InkDoodleDivider className="w-36 text-ink-faint opacity-60" />
+      <section className="border-b border-rule/60 bg-paper-2/60">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 py-24">
+          <div className="flex justify-center mb-6 text-aurora-1">
+            <InkDoodleDivider className="w-36 opacity-70" />
           </div>
-          <p className="font-mono text-xs text-ink-faint tracking-widest mb-4 uppercase">No. 06 — questions</p>
-          <h2 className="font-display text-3xl sm:text-4xl text-ink font-normal mb-10 leading-snug">
-            Frequently Asked
+          <p className="font-mono text-[11px] text-ink-muted tracking-[0.25em] mb-4 uppercase text-center inline-flex items-center gap-2 justify-center w-full">
+            <span className="inline-block h-1.5 w-1.5 rounded-full bg-aurora-6" />
+            No. 06 — questions
+          </p>
+          <h2 className="font-display text-4xl sm:text-5xl text-ink font-medium mb-12 leading-[1.05] tracking-tight text-center">
+            Frequently <span className="aurora-text italic">asked</span>
           </h2>
           <FAQAccordion />
         </div>
       </section>
 
       {/* ── Final CTA ─────────────────────────────────────────────────────── */}
-      <section className="py-20 px-4 sm:px-6 text-center">
-        <p className="font-mono text-xs text-ink-faint tracking-widest mb-6 uppercase">ready to begin?</p>
-        <h2 className="font-display text-3xl sm:text-4xl text-ink font-normal mb-8 leading-snug">
-          Start your mathematics journey.
-        </h2>
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-10">
-          <a
-            href="#quiz"
-            className="font-mono text-xs tracking-wider px-7 py-3 bg-accent text-paper hover:bg-ink transition-colors"
-          >
-            take the quiz →
-          </a>
-          <Link
-            href="/programs"
-            className="font-mono text-xs tracking-wider px-7 py-3 border border-rule text-ink-muted hover:border-ink-faint hover:text-ink transition-colors"
-          >
-            explore programs
-          </Link>
+      <section className="relative py-28 px-4 sm:px-6 text-center overflow-hidden">
+        <div className="aurora-mesh" aria-hidden>
+          <span className="blob" />
+          <span className="blob acid" />
         </div>
-        {/* Sign-off doodle */}
-        <div className="flex flex-col items-center gap-2">
-          <InkRule className="w-24 text-rule opacity-60" />
-          <p className="font-display italic text-ink-faint text-sm select-none" style={{ transform: "rotate(-2deg)" }}>
-            fin.
+        <div className="relative">
+          <p className="font-mono text-[11px] text-ink-muted tracking-[0.25em] mb-6 uppercase">
+            ready to begin?
           </p>
+          <h2 className="font-display text-5xl sm:text-6xl text-ink font-medium mb-10 leading-[1.05] tracking-tight">
+            Start your <span className="aurora-text italic">mathematics</span> journey.
+          </h2>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
+            <a href="#quiz" className="btn-aurora">
+              take the quiz <span aria-hidden>→</span>
+            </a>
+            <Link href="/programs" className="btn-ghost">
+              explore programs
+            </Link>
+          </div>
+          <div className="flex flex-col items-center gap-2 text-aurora-1">
+            <InkRule className="w-24 opacity-50" />
+            <p
+              className="font-display italic text-ink-muted text-sm select-none"
+              style={{ transform: "rotate(-2deg)" }}
+            >
+              fin.
+            </p>
+          </div>
         </div>
       </section>
     </div>
