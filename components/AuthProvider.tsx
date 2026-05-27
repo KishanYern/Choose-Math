@@ -31,7 +31,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   async function handleSignIn() {
-    await signInWithGoogle();
+    await signInWithGoogle(); // returns null if user closed popup — no-op
   }
 
   async function handleSignOut() {

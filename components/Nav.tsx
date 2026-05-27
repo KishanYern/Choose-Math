@@ -19,7 +19,7 @@ const navLinks = [
 export function Nav() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const { user, signIn, signOut, loading } = useAuth();
+  const { user, signOut, loading } = useAuth();
 
   return (
     <header className="sticky top-0 z-50 border-b border-rule/60 backdrop-blur-xl bg-paper/70 supports-[backdrop-filter]:bg-paper/55">
@@ -85,12 +85,12 @@ export function Nav() {
                 </button>
               </div>
             ) : (
-              <button
-                onClick={signIn}
+              <Link
+                href="/signin"
                 className="hidden md:block font-mono text-[11px] text-ink-faint hover:text-ink tracking-wider transition-colors"
               >
                 sign in
-              </button>
+              </Link>
             )
           )}
           <ThemeToggle />
@@ -132,7 +132,7 @@ export function Nav() {
               </Link>
             );
           })}
-          <div className="mt-2 pt-3 border-t border-rule">
+          <div className="mt-2 pt-3 border-t border-rule flex items-center justify-between">
             <Link
               href="/quiz"
               onClick={() => setMobileOpen(false)}
@@ -140,6 +140,15 @@ export function Nav() {
             >
               start the quiz →
             </Link>
+            {!loading && !user && (
+              <Link
+                href="/signin"
+                onClick={() => setMobileOpen(false)}
+                className="font-mono text-[11px] text-ink-faint hover:text-ink tracking-wider transition-colors"
+              >
+                sign in
+              </Link>
+            )}
           </div>
         </div>
       )}
