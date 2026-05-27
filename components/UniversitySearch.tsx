@@ -45,22 +45,24 @@ function formatSize(size: number): string {
 export function UniversitySearch() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<University[]>([]);
-  const [status, setStatus] = useState<Status>("idle");
+  const [settled, setSettled] = useState<"idle" | "results" | "empty" | "error">("idle");
   const debouncedQuery = useDebounce(query, 300);
   const abortRef = useRef<AbortController | null>(null);
+  const [retryCount, setRetryCount] = useState(0);
+  const [fetchKey, setFetchKey] = useState("");
+
+  /* Derive status: idle when query is short, loading when a fetch is in-flight,
+     otherwise use the settled result from the last completed fetch. */
+  const isIdle = debouncedQuery.length < 2;
+  const isLoading = !isIdle && fetchKey !== debouncedQuery;
+  const status: Status = isIdle ? "idle" : isLoading ? "loading" : settled;
 
   useEffect(() => {
-    if (debouncedQuery.length < 2) {
-      setStatus("idle");
-      setResults([]);
-      return;
-    }
+    if (debouncedQuery.length < 2) return;
 
     abortRef.current?.abort();
     const controller = new AbortController();
     abortRef.current = controller;
-
-    setStatus("loading");
 
     fetch(`/api/universities?q=${encodeURIComponent(debouncedQuery)}`, {
       signal: controller.signal,
@@ -71,19 +73,20 @@ export function UniversitySearch() {
       })
       .then((data: University[]) => {
         setResults(data);
-        setStatus(data.length > 0 ? "results" : "empty");
+        setSettled(data.length > 0 ? "results" : "empty");
+        setFetchKey(debouncedQuery);
       })
       .catch((err) => {
         if (err instanceof DOMException && err.name === "AbortError") return;
-        setStatus("error");
+        setSettled("error");
+        setFetchKey(debouncedQuery);
       });
 
     return () => controller.abort();
-  }, [debouncedQuery]);
+  }, [debouncedQuery, retryCount]);
 
   function retry() {
-    setQuery((prev) => prev + " ");
-    setTimeout(() => setQuery((prev) => prev.trimEnd()), 0);
+    setRetryCount((c) => c + 1);
   }
 
   return (
