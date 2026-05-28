@@ -3,6 +3,8 @@
 import { useState } from "react";
 import type { Program, ProgramFocus } from "@/data/programs";
 
+type SortOrder = "featured" | "alpha";
+
 const focusLabels: Record<ProgramFocus | "all", string> = {
   all: "all programs",
   "pure-math": "pure math",
@@ -82,39 +84,62 @@ function ProgramRow({ program, index }: { program: Program; index: number }) {
 
 export function ProgramsFilter({ programs }: { programs: Program[] }) {
   const [active, setActive] = useState<ProgramFocus | "all">("all");
+  const [sort, setSort] = useState<SortOrder>("featured");
 
   const filtered =
     active === "all"
       ? programs
       : programs.filter((p) => p.focus.includes(active));
 
+  const sorted =
+    sort === "alpha"
+      ? [...filtered].sort((a, b) => a.school.localeCompare(b.school))
+      : filtered;
+
   return (
     <div>
-      {/* Filter row */}
-      <div className="flex flex-wrap gap-2 mb-8 border-b border-rule pb-4">
-        {focusTabs.map((tab) => (
-          <button
-            key={tab}
-            onClick={() => setActive(tab)}
-            className={`font-mono text-xs tracking-wider px-3 py-1.5 border transition-colors ${
-              active === tab
-                ? "border-accent bg-accent text-paper"
-                : "border-rule text-ink-faint hover:border-ink-faint hover:text-ink-muted"
-            }`}
-          >
-            {focusLabels[tab]}
-            {tab !== "all" && (
-              <span className="ml-1.5 opacity-60">
-                ({programs.filter((p) => p.focus.includes(tab as ProgramFocus)).length})
-              </span>
-            )}
-          </button>
-        ))}
+      {/* Filter + sort row */}
+      <div className="flex flex-wrap items-end gap-2 mb-8 border-b border-rule pb-4">
+        <div className="flex flex-wrap gap-2 flex-1">
+          {focusTabs.map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setActive(tab)}
+              className={`font-mono text-xs tracking-wider px-3 py-1.5 border transition-colors ${
+                active === tab
+                  ? "border-accent bg-accent text-paper"
+                  : "border-rule text-ink-faint hover:border-ink-faint hover:text-ink-muted"
+              }`}
+            >
+              {focusLabels[tab]}
+              {tab !== "all" && (
+                <span className="ml-1.5 opacity-60">
+                  ({programs.filter((p) => p.focus.includes(tab as ProgramFocus)).length})
+                </span>
+              )}
+            </button>
+          ))}
+        </div>
+        <div className="flex gap-1 ml-auto">
+          {(["featured", "alpha"] as SortOrder[]).map((s) => (
+            <button
+              key={s}
+              onClick={() => setSort(s)}
+              className={`font-mono text-[11px] tracking-wider px-2.5 py-1.5 border transition-colors ${
+                sort === s
+                  ? "border-accent bg-accent text-paper"
+                  : "border-rule text-ink-faint hover:border-ink-faint hover:text-ink-muted"
+              }`}
+            >
+              {s === "featured" ? "featured" : "a–z"}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Programs list */}
       <div>
-        {filtered.map((program, i) => (
+        {sorted.map((program, i) => (
           <ProgramRow key={program.id} program={program} index={i} />
         ))}
       </div>

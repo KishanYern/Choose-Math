@@ -11,6 +11,8 @@ const FIELDS = [
   "school.state",
   "school.school_url",
   "latest.student.size",
+  "latest.admissions.admission_rate.overall",
+  "latest.admissions.sat_scores.average.overall",
 ].join(",");
 
 const US_STATES = new Set([
@@ -40,9 +42,16 @@ export async function GET(request: NextRequest) {
   }
 
   const q = request.nextUrl.searchParams.get("q")?.trim() ?? "";
-  if (q.length < 2) {
+  const stateParam = request.nextUrl.searchParams.get("state")?.trim().toUpperCase() ?? "";
+  const cityParam = request.nextUrl.searchParams.get("city")?.trim() ?? "";
+
+  const hasName = q.length >= 2;
+  const hasState = US_STATES.has(stateParam);
+  const hasCity = cityParam.length >= 2;
+
+  if (!hasName && !hasState && !hasCity) {
     return NextResponse.json(
-      { error: "Query must be at least 2 characters" },
+      { error: "Provide a name query, state, or city filter" },
       { status: 400 },
     );
   }
@@ -51,16 +60,13 @@ export async function GET(request: NextRequest) {
     api_key: apiKey,
     _fields: FIELDS,
     "school.degrees_awarded.predominant": "3",
-    per_page: "20",
+    per_page: "100",
     sort: "school.name:asc",
   });
 
-  const upper = q.toUpperCase();
-  if (US_STATES.has(upper)) {
-    params.set("school.state", upper);
-  } else {
-    params.set("school.name", q);
-  }
+  if (hasState) params.set("school.state", stateParam);
+  if (hasCity) params.set("school.city", cityParam);
+  if (hasName) params.set("school.name", q);
 
   try {
     const res = await fetch(`${SCORECARD_URL}?${params.toString()}`);
@@ -81,6 +87,14 @@ export async function GET(request: NextRequest) {
         state: (r["school.state"] as string) ?? "",
         url: normalizeUrl(r["school.school_url"] as string | null),
         size: (r["latest.student.size"] as number) ?? null,
+        admissionRate:
+          typeof r["latest.admissions.admission_rate.overall"] === "number"
+            ? r["latest.admissions.admission_rate.overall"]
+            : null,
+        satAvg:
+          typeof r["latest.admissions.sat_scores.average.overall"] === "number"
+            ? r["latest.admissions.sat_scores.average.overall"]
+            : null,
       }),
     );
 

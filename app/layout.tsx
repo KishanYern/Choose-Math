@@ -57,6 +57,10 @@ export const metadata: Metadata = {
       "Discover what a mathematics degree can do for your career. Take our quiz, explore paths, and find your direction.",
     type: "website",
   },
+  icons: {
+    icon: "/icon",
+    apple: "/apple-icon",
+  },
 };
 
 export default function RootLayout({
