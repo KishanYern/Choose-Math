@@ -132,14 +132,13 @@ export function UniversitySearch() {
   const isLoading = shouldSearch && fetchKey !== currentKey;
   const status: Status = !shouldSearch ? "idle" : isLoading ? "loading" : settled;
 
-  const results = sortResults(rawResults, sortKey);
+  // When the user clears all filters, we want results gone visually. The
+  // `status === "idle"` branch already hides the list, but we also derive an
+  // empty results array so nothing leaks into other render paths.
+  const results = shouldSearch ? sortResults(rawResults, sortKey) : [];
 
   useEffect(() => {
-    if (!shouldSearch) {
-      setRawResults([]);
-      setSettled("idle");
-      return;
-    }
+    if (!shouldSearch) return;
 
     abortRef.current?.abort();
     const controller = new AbortController();
