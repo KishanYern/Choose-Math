@@ -3,6 +3,8 @@ import type { NextConfig } from "next";
 const isDev = process.env.NODE_ENV === "development";
 
 const nextConfig: NextConfig = {
+  // Emit a self-contained build (.next/standalone/server.js) for minimal Docker images.
+  output: "standalone",
   async headers() {
     return [
       {
